@@ -1,0 +1,101 @@
+package models
+
+import (
+	"fmt"
+	"time"
+
+	log "github.com/cihub/seelog"
+	rlib "github.com/garyburd/redigo/redis"
+)
+
+var (
+	redisPool *rlib.Pool
+)
+
+func Open(host string, port int, password string) {
+	redisPool = newPool(host, port, password)
+}
+
+func GetConn() rlib.Conn {
+	return redisPool.Get()
+}
+
+func Close() error {
+	return redisPool.Close()
+}
+
+func newPool(host string, port int, password string) *rlib.Pool {
+	return &rlib.Pool{
+		MaxIdle:     19999,
+		IdleTimeout: 240 * time.Second,
+		Dial: func() (rlib.Conn, error) {
+			c, err := rlib.Dial("tcp", fmt.Sprintf("%s:%d", host, port), rlib.DialPassword(password))
+			if err != nil {
+				log.Error("failed to dial redis server:", err)
+				return nil, err
+			}
+			return c, err
+		},
+	}
+}
+
+func LoadCap(shortcode, key string) (uint64, error) {
+	conn := GetConn()
+	defer func() {
+		conn.Close()
+	}()
+	return rlib.Uint64(conn.Do("GET", "cap_"+shortcode+"_"+key))
+}
+
+func SetCap() {
+	conn := GetConn()
+	defer func() {
+		conn.Close()
+	}()
+	conn.Do("SET", "cap_4556066_FY1", 0)
+	conn.Do("SET", "cap_4556067_GZ", 0)
+	conn.Do("SET", "cap_4556067_GY", 0)
+	conn.Do("SET", "cap_4556068_WZ", 0)
+
+}
+
+func IncrCap(shortcode, key string) {
+	conn := GetConn()
+	defer func() {
+		conn.Close()
+	}()
+	conn.Do("INCRBY", "cap_"+shortcode+"_"+key, 1)
+}
+
+func LoadPostback(camp_id string) (uint64, error) {
+	conn := GetConn()
+	defer func() {
+		conn.Close()
+	}()
+	return rlib.Uint64(conn.Do("GET", "postback_"+camp_id))
+}
+
+func SetPostback() {
+	conn := GetConn()
+	defer func() {
+		conn.Close()
+	}()
+	conn.Do("SET", "postback_10000", 0)
+	conn.Do("SET", "postback_10001", 0)
+	conn.Do("SET", "postback_10002", 0)
+	conn.Do("SET", "postback_10003", 0)
+	conn.Do("SET", "postback_10004", 0)
+	conn.Do("SET", "postback_10005", 0)
+	conn.Do("SET", "postback_10006", 0)
+	conn.Do("SET", "postback_10007", 0)
+	conn.Do("SET", "postback_10008", 0)
+
+}
+
+func IncrPostback(camp_id string) {
+	conn := GetConn()
+	defer func() {
+		conn.Close()
+	}()
+	conn.Do("INCRBY", "postback_"+camp_id, 1)
+}
