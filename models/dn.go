@@ -6,6 +6,35 @@ import (
 	"github.com/astaxie/beego/orm"
 )
 
+type Action struct {
+	Type    string `json:"type"`
+	SubType string `json:"subType"`
+	Status  string `json:"status"`
+	Rate    string `json:"rate"`
+}
+
+type Data struct {
+	Shortcode       string `json:"shortcode"`
+	ChannelId       string `json:"channelId"`
+	ApplicationId   string `json:"applicationId"`
+	CountryId       string `json:"countryId"`
+	OperatorId      string `json:"operatorId"`
+	Msisdn          string `json:"msisdn"`
+	Action          Action `json:"action"`
+	ActivityTime    string `json:"activityTime"`
+	SubscriptionEnd string `json:"subscriptionEnd"`
+}
+
+type Transaction struct {
+	TransactionId string `json:"transactionId"`
+	Data          Data   `json:"data"`
+}
+
+type DnJson struct {
+	RequestId   string      `json:"requestId"`
+	Transaction Transaction `json:"transaction"`
+}
+
 func InsertIntoDn(dn *DnStruct) {
 	o := orm.NewOrm()
 	if dn.Mtid != "" {

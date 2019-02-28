@@ -100,23 +100,32 @@ type MtStruct struct {
 }
 
 type DnStruct struct {
-	Id        int64  `orm:"pk;auto"`
-	Dnid      string `orm:"size(50);index"`
-	Msisdn    string `orm:"size(20);index"`
-	Shortcode string `orm:"size(20);index"`
-	Keyword   string `orm:"size(20);index"`
-	Country   string `orm:"size(20);index"`
-	Operator  string `orm:"size(20);index"`
-	Price     string `orm:"size(10);;index"`
-	Time      string `orm:"size(30);index"`
-	SubId     int64
-	Mtid      string `orm:"size(30)"`
-	AffName   string `orm:"size(50);index"`
-	PubId     string `orm:"size(100);index"`
-	Charge    string
+	Id      int64  `orm:"pk;auto"`
+	Keyword string `orm:"size(20);index"`
+	Price   string `orm:"size(10);;index"`
+	Time    string `orm:"size(30);index"`
+	SubId   int64
+	AffName string `orm:"size(50);index"`
+	PubId   string `orm:"size(100);index"`
+	Charge  string
 
-	Status   string `orm:"size(20)"`
-	DnStatus int    `orm:"index"`
+	DnStatus int `orm:"index"`
+
+	RequestId       string `orm:"size(100)"`
+	TransactionId   string `orm:"size(100)"`
+	Shortcode       string `orm:"size(100)"`
+	ChannelId       string `orm:"size(100)"`
+	ApplicationId   string `orm:"size(100)"`
+	Country         string `orm:"size(100)"`
+	OperatorId      string `orm:"size(100)"`
+	Msisdn          string `orm:"size(100)"`
+	Mtid            string `orm:"size(100)"`
+	ActivityTime    string `orm:"size(100)"`
+	SubscriptionEnd string `orm:"size(100)"`
+	Type            string `orm:"size(100)"`
+	SubType         string `orm:"size(100)"`
+	Status          string `orm:"size(100)"`
+	Rate            string `orm:"size(100)"`
 }
 
 func init() {

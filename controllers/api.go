@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 
@@ -29,6 +30,14 @@ func (this *APIController) Get() {
 	this.ServeJSON()
 }
 
+func (this *APIController) Post() {
+	var res string
+	res = Notification(this)
+	this.Data["json"] = "success"
+	fmt.Println(res)
+	this.ServeJSON()
+}
+
 func Subscribe(this *APIController) string {
 	ptxid := this.GetString("ptxid")
 	operator := this.GetString("operator")
@@ -38,6 +47,9 @@ func Subscribe(this *APIController) string {
 
 func Notification(this *APIController) string {
 	body, _ := ioutil.ReadAll(this.Ctx.Request.Body)
+	var dnJson models.DnJson
+	json.Unmarshal([]byte(body), &dnJson)
 	fmt.Println(string(body))
+	fmt.Println(dnJson)
 	return ""
 }
