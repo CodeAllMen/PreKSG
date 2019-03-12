@@ -30,5 +30,6 @@ func URLEncodeUpper(str string) string {
 	url_encode := url.QueryEscape(str)
 	url_encode = strings.Replace(url_encode, "%2B", "%2b", -1)
 	url_encode = strings.Replace(url_encode, "%2F", "%2f", -1)
+	url_encode = strings.Replace(url_encode, "%3A", "%3a", -1)
 	return url_encode
 }

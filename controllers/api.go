@@ -33,9 +33,8 @@ func (this *APIController) Get() {
 func (this *APIController) Post() {
 	var res string
 	res = Notification(this)
-	this.Data["json"] = "success"
+	this.Ctx.WriteString("1")
 	fmt.Println(res)
-	this.ServeJSON()
 }
 
 func Subscribe(this *APIController) string {
@@ -51,5 +50,6 @@ func Notification(this *APIController) string {
 	json.Unmarshal([]byte(body), &dnJson)
 	fmt.Println(string(body))
 	fmt.Println(dnJson)
+	models.InsertIntoDn(dnJson)
 	return ""
 }
