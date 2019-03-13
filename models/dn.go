@@ -1,8 +1,10 @@
 package models
 
 import (
+	"bytes"
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"net/http"
 	"strconv"
 	"strings"
@@ -71,9 +73,10 @@ func SendSubMt(dn DnStruct) {
 	url := "http://ksg.kncee.com/MSG/v1.1/API/SendSMS?applicationId=%s&countryId=%s&operatorId=%s&MSISDN=%s" +
 		"&cpId=%s&requestId=%s&apiKey=%s&signature=%s&timestamp=%s&lang=%s&shortcode=%s&msgText=%s"
 
-	var shortCode, countryId, applicationId, cpId, apiKey, apiSecret string
+	var shortCode, countryId, applicationId, cpId, apiKey, apiSecret, urlPost string
 	timestamp := strconv.Itoa(int(time.Now().Unix()))
 	var signature, operatorId, msgText string
+	pass := RandUpString(8)
 
 	switch dn.ApplicationId {
 	case "12":
@@ -83,8 +86,9 @@ func SendSubMt(dn DnStruct) {
 		cpId = "9"
 		apiKey = "ivvT4azDdWN3UTgMPAOelOnIsscSGSKJ"
 		apiSecret = "vZkXOxb70S9Os6DfYZKyay+60brtDRZZVHFYNBayA7E5dnpBf2Xsu5drtNtBty1D"
-		msgText = "Thank you for subscribing to Gold Finger service. You can visit the portal on http://ku.g0finger.com/"
+		msgText = "Thank you for subscribing to Gold Finger service. You can visit the portal on http://ku.g0finger.com/. Username: " + dn.Msisdn + ".Password: " + pass
 		applicationId = "12"
+		urlPost = "http://ku.g0finger.com/"
 	case "13":
 		shortCode = "1111"
 		countryId = "247"
@@ -92,8 +96,9 @@ func SendSubMt(dn DnStruct) {
 		cpId = "9"
 		apiKey = "5MC0F8sB2INDoYujroXAKhBml1wkpWBp"
 		apiSecret = "7erVdrMdoavtY1MPQy/gJn7L63B/tj2+nHr+ccwyOYQDSCoa5b3EQOUcI4F0sHLh"
-		msgText = "Thank you for subscribing to Gold Finger service. You can visit the portal on http://ar.abanime.com/"
+		msgText = "Thank you for subscribing to Gold Finger service. You can visit the portal on http://ar.abanime.com/. Username: " + dn.Msisdn + ".Password: " + pass
 		applicationId = "13"
+		urlPost = "http://ar.abanime.com/"
 	case "14":
 		shortCode = "1111"
 		countryId = "247"
@@ -101,8 +106,9 @@ func SendSubMt(dn DnStruct) {
 		cpId = "9"
 		apiKey = "Znvg0aF42RLalt5nFTnsUGbc4Fc5h2Sf"
 		apiSecret = "tqhkRFEbpXhpk31xkCQjSmao9dlrsXOk3wZYSaJYnWROlVxJVUgAr+wQ/Lqiyj1x"
-		msgText = "Thank you for subscribing to Gold Finger service. You can visit the portal on http://ar.poimovie.com/"
+		msgText = "Thank you for subscribing to Gold Finger service. You can visit the portal on http://ar.poimovie.com/. Username: " + dn.Msisdn + ".Password: " + pass
 		applicationId = "14"
+		urlPost = "http://ar.poimovie.com/"
 	case "15":
 		shortCode = "1111"
 		countryId = "247"
@@ -110,9 +116,12 @@ func SendSubMt(dn DnStruct) {
 		cpId = "9"
 		apiKey = "kLJ6ToymFc5yGHP6N6jYM0fq9qJdAIat"
 		apiSecret = "diy3QXB6J5Ekp7BBXxvnv0ZEhuGLMAdgTJoy1zq7FOBvXviLG8RM8/IZZf8f0r4E"
-		msgText = "Thank you for subscribing to Gold Finger service. You can visit the portal on http://ar.fit8tube.com/"
+		msgText = "Thank you for subscribing to Gold Finger service. You can visit the portal on http://ar.fit8tube.com/. Username: " + dn.Msisdn + ".Password: " + pass
 		applicationId = "15"
+		urlPost = "http://ar.fit8tube.com/"
 	}
+
+	AddUser(urlPost, dn.Msisdn, pass)
 
 	signature_url := "ApiKey=%s&ApiSecret=%s&ApplicationId=%s&CountryId=%s&OperatorId=%s" +
 		"&CpId=%s&MSISDN=%s&Timestamp=%s&Lang=%s&ShortCode=%s&MsgText=%s&Method=%s"
@@ -132,4 +141,31 @@ func SendSubMt(dn DnStruct) {
 
 	fmt.Println(string(body))
 
+}
+
+func AddUser(url, name, pass string) {
+
+	client := &http.Client{}
+	urlPost := url + "user/add?user=" + name + "&pass=" + pass + "&sign=ksg"
+	reqjson, _ := http.NewRequest("POST", urlPost, nil)
+	res, _ := client.Do(reqjson)
+	defer res.Body.Close()
+}
+
+func RandUpString(l int) string {
+	var result bytes.Buffer
+	var temp byte
+	for i := 0; i < l; {
+		if RandInt(48, 57) != temp {
+			temp = RandInt(48, 57)
+			result.WriteByte(temp)
+			i++
+		}
+	}
+	return result.String()
+}
+
+func RandInt(min int, max int) byte {
+	rand.Seed(time.Now().UnixNano())
+	return byte(min + rand.Intn(max-min))
 }
