@@ -1,0 +1,137 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=360">
+    <title>{{.pro}}</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: bisque
+        }
+
+        .main {
+            max-width: 360px;
+            margin: 0 auto 0 auto;
+            overflow-x: hidden;
+            text-align: center;
+            background-color: bisque;
+        }
+
+        img {
+            width: 80%;
+            float: center;
+        }
+
+        .head {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+        }
+
+        .head a {
+            color: red;
+        }
+
+        .title {}
+
+        .title p {
+            margin: 10px 0px 10px 0px;
+        }
+
+        .sub {
+            outline: none;
+            color: white;
+            padding: 8px 16px 8px 16px;
+            font-size: 17px;
+            background-color: #69a012;
+        }
+
+        .exit {
+            outline: none;
+            color: white;
+            font-size: 16px;
+            margin: 10px;
+            padding: 2px 10px 2px 10px;
+            background-color: black;
+        }
+
+        .tnc {
+            text-align: -webkit-auto;
+            margin: 0 45px 10px 45px;
+        }
+
+        .tncar {
+            text-align: right;
+            margin: 0 45px 10px 45px;
+        }
+
+        .btn-left {
+            outline: none;
+            border-right-style: groove;
+            border-radius: 10px 0px 0px 10px;
+            background-color: antiquewhite;
+        }
+
+        .btn-right {
+            outline: none;
+            border-radius: 0px 10px 10px 0px;
+            margin-left: -4px;
+            background-color: antiquewhite;
+        }
+
+        select {
+            height: 40px;
+            border: 1px solid rgb(0, 0, 0);
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            text-align: center;
+            padding: 10px 50px 10px 10px;
+            height: 40px;
+            -webkit-appearance: none;
+            background-color: #fff;
+            background: url(/static/img/select.png) no-repeat scroll right center;
+            background-size: 20px;
+            padding-right: 14px;
+            max-width: 650px;
+            width: 50%;
+            margin: 0 0 5px 0;
+        }
+
+        .noexit {
+            display: none;
+        }
+
+        #ar-div.tnc {
+            text-align: right;
+        }
+
+        .xuanfu {
+            left: 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 100;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div style="height: 200px;">
+            <h2>{{.product}}</h2>
+            <img src="/static/img/{{.service}}.png">
+        </div>
+        <br>
+        <div style="margin-top: 150px;">
+            <h3>{{.message}}</h3>
+        </div>
+        <div class="xuanfu">
+            <p>Copyright © 2019 - FoxSeek</p>
+        </div>
+    </div>
+</body>
+
+</html>

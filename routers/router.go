@@ -8,6 +8,7 @@ import (
 func init() {
 
 	beego.Router("/of", &controllers.Offer{})
+	beego.Router("/thank/:kw", &controllers.UAEThank{})
 
 	//泰国
 	beego.Router("/:mode/:kw", &controllers.UAELP{})

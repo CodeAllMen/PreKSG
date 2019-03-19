@@ -39,7 +39,7 @@ func (this *APIController) Post() {
 
 func Subscribe(this *APIController) string {
 	ptxid := this.GetString("ptxid")
-	operator := this.GetString("operator")
+	operator := this.GetString("op")
 	res := models.Subscribe(ptxid, operator)
 	return res
 }

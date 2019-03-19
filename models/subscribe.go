@@ -14,6 +14,8 @@ import (
 
 func Subscribe(ptxid, operator string) string {
 
+	fmt.Println(operator)
+
 	track, err := SearchTrackById(ptxid)
 	if err != nil || track.Id == 0 {
 		return "201"
@@ -30,47 +32,87 @@ func Subscribe(ptxid, operator string) string {
 		"&cpId=%s&requestId=%s&apiKey=%s&signature=%s&timestamp=%s&lang=%s&shortcode=%s" +
 		"&ipAddress=%s&lpUrl=%s&rurl=%s"
 
-	var shortCode, countryId, applicationId, cpId, apiKey, contentPage, apiSecret string
+	var shortCode, countryId, applicationId, cpId, apiKey, apiSecret, rurl string
 	timestamp := strconv.Itoa(int(time.Now().Unix()))
 	var signature, operatorId string
 
-	switch track.Keyword {
+	switch strings.ToUpper(track.Keyword) {
 	case "GF":
-		shortCode = "1111"
+		switch operator {
+		//1 Etisalat 2 DU
+		case "1":
+			shortCode = "1111"
+			operatorId = "28"
+			apiKey = "ivvT4azDdWN3UTgMPAOelOnIsscSGSKJ"
+			apiSecret = "vZkXOxb70S9Os6DfYZKyay+60brtDRZZVHFYNBayA7E5dnpBf2Xsu5drtNtBty1D"
+			rurl = "http://ku.g0finger.com/"
+		case "2":
+			shortCode = "3246"
+			operatorId = "32"
+			apiKey = "7xlO9uuUktUka8CFlHPfJsDzzlaS51vD"
+			apiSecret = "/JACZwinCd+WVSd+mNxJFAMvzWNWKYXmia1oA+6vPrUj7c7eMI29Yf1h+b6zd+Un"
+			rurl = "http://kg.foxseek.com/thank/gf"
+		}
 		applicationId = "12"
 		countryId = "247"
-		operatorId = "28"
 		cpId = "9"
-		apiKey = "ivvT4azDdWN3UTgMPAOelOnIsscSGSKJ"
-		apiSecret = "vZkXOxb70S9Os6DfYZKyay+60brtDRZZVHFYNBayA7E5dnpBf2Xsu5drtNtBty1D"
-		contentPage = "http://ku.g0finger.com/"
 	case "MYA":
-		shortCode = "1111"
+		switch operator {
+		//1 Etisalat 2 DU
+		case "1":
+			shortCode = "1111"
+			operatorId = "28"
+			apiKey = "5MC0F8sB2INDoYujroXAKhBml1wkpWBp"
+			apiSecret = "7erVdrMdoavtY1MPQy/gJn7L63B/tj2+nHr+ccwyOYQDSCoa5b3EQOUcI4F0sHLh"
+			rurl = "http://ar.abanime.com/"
+		case "2":
+			shortCode = "3246"
+			operatorId = "32"
+			apiKey = "xxKHAnaleglcp6He9KEk85pABMJSXmwK"
+			apiSecret = "ncVAQM4VE8SrRqZAKW4MWtia/66PBs37c8PtoQgUReU02Mjwe06QSl+P1OIwJTx0"
+			rurl = "http://kg.foxseek.com/thank/mya"
+		}
 		applicationId = "13"
 		countryId = "247"
-		operatorId = "28"
 		cpId = "9"
-		apiKey = "5MC0F8sB2INDoYujroXAKhBml1wkpWBp"
-		apiSecret = "7erVdrMdoavtY1MPQy/gJn7L63B/tj2+nHr+ccwyOYQDSCoa5b3EQOUcI4F0sHLh"
-		contentPage = "http://ar.abanime.com/"
 	case "POM":
-		shortCode = "1111"
+		switch operator {
+		//1 Etisalat 2 DU
+		case "1":
+			shortCode = "1111"
+			operatorId = "28"
+			apiKey = "Znvg0aF42RLalt5nFTnsUGbc4Fc5h2Sf"
+			apiSecret = "tqhkRFEbpXhpk31xkCQjSmao9dlrsXOk3wZYSaJYnWROlVxJVUgAr+wQ/Lqiyj1x"
+			rurl = "http://ar.poimovie.com/"
+		case "2":
+			shortCode = "3246"
+			operatorId = "32"
+			apiKey = "czoFxiJ3HfS6EZwZjHhIe41v3J1AizyS"
+			apiSecret = "bB9csgdZ7wkt9ryFQXDx8y7/ozlv9gmgCkcQIBZKOLDoOSqiVd5ri9Pf0N8SdgDw"
+			rurl = "http://kg.foxseek.com/thank/pom"
+		}
 		applicationId = "14"
 		countryId = "247"
-		operatorId = "28"
 		cpId = "9"
-		apiKey = "Znvg0aF42RLalt5nFTnsUGbc4Fc5h2Sf"
-		apiSecret = "tqhkRFEbpXhpk31xkCQjSmao9dlrsXOk3wZYSaJYnWROlVxJVUgAr+wQ/Lqiyj1x"
-		contentPage = "http://ar.poimovie.com/"
 	case "BB":
-		shortCode = "1111"
+		switch operator {
+		//1 Etisalat 2 DU
+		case "1":
+			shortCode = "1111"
+			operatorId = "28"
+			apiKey = "kLJ6ToymFc5yGHP6N6jYM0fq9qJdAIat"
+			apiSecret = "diy3QXB6J5Ekp7BBXxvnv0ZEhuGLMAdgTJoy1zq7FOBvXviLG8RM8/IZZf8f0r4E"
+			rurl = "http://ar.fit8tube.com/"
+		case "2":
+			shortCode = "3246"
+			operatorId = "32"
+			apiKey = "19cN7sCClgx2OLjlkHwHcTKcCdqxdY6G"
+			apiSecret = "O0yYy5tPQ7noIfksc3YA0nJc3ch+AEoI6GbWcdb1vpMnWfV1YFR8LILj4ooHjwKn"
+			rurl = "http://kg.foxseek.com/thank/bb"
+		}
 		applicationId = "15"
 		countryId = "247"
-		operatorId = "28"
 		cpId = "9"
-		apiKey = "kLJ6ToymFc5yGHP6N6jYM0fq9qJdAIat"
-		apiSecret = "diy3QXB6J5Ekp7BBXxvnv0ZEhuGLMAdgTJoy1zq7FOBvXviLG8RM8/IZZf8f0r4E"
-		contentPage = "http://ar.fit8tube.com/"
 	}
 
 	signature_url := "ApiKey=%s&ApiSecret=%s&ApplicationId=%s&CountryId=%s&OperatorId=%s" +
@@ -82,10 +124,14 @@ func Subscribe(ptxid, operator string) string {
 	signature = HmacSha256([]byte(signature_url), []byte(apiSecret))
 
 	url = fmt.Sprintf(url, applicationId, countryId, operatorId, cpId, ptxid, apiKey, signature,
-		timestamp, "ar", shortCode, track.Ip, "http://kg.foxseek.com/op/"+strings.ToLower(track.Keyword), contentPage)
+		timestamp, "ar", shortCode, track.Ip, "http://kg.foxseek.com/op/"+strings.ToLower(track.Keyword), rurl)
 	fmt.Println("url: ", url)
+
 	client := &http.Client{}
-	res, err := client.Get(url)
+	reqest, _ := http.NewRequest("GET", url, nil)
+	reqest.Header.Set("statusMessage", "http://thankyou.com")
+	res, err := client.Do(reqest)
+
 	fmt.Println(err)
 	body, _ := ioutil.ReadAll(res.Body)
 

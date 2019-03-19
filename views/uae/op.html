@@ -122,7 +122,7 @@
         </div>
         <div id="en-div">
             <div class="title">
-                <p>Free for 24 hours then AED 10 per week</p>
+                <p>Free for 24 hours then AED 11 per week</p>
             </div>
             <img src="/static/img/{{.service}}.png">
             <p>{{.pro}}</p>
@@ -135,12 +135,12 @@
             </div>
             <p id="message" style="color:red;"></p>
             <button class="sub" id="comfirm">Confirm</button><br>
-            <p>Free for 24 hours than AED 10 per week</p>
+            <p>Free for 24 hours than AED 11 per week</p>
             <p class="tnc">By clicking on Subcribe, you agree to the below terms and conditions:<br>
                 - You will start the paid subscription automatically every week.<br>
                 - No commitment you can cancel anytime by sending C {{.key}} to {{.code}} <br>
-                - To get support, please contact abc@abc.com or +971-XXXXXXXX
-                - The free trial is valid only for new subscribers
+                - The free trial is valid only for new subscribers<br>
+                - To get support, please contact: vas@kncee.com
             </p>
         </div>
         <div id="ar-div" class="noexit">
@@ -189,7 +189,7 @@
             data: data,
             success: function (result) {
                 if (result.data == "") {
-                    $("#message").text("κάτι είναι σφάλμα, δοκιμάστε ξανά")
+                    $("#message").text("Something is wrong, please try again")
                 } else {
                     window.location.href = result.data
                 }

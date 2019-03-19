@@ -65,3 +65,34 @@ func (this *UAELP) Get() {
 	this.Data["ptxid"] = id_str
 	this.TplName = "uae/" + this.Ctx.Input.Param(":mode") + ".html"
 }
+
+type UAEThank struct {
+	beego.Controller
+}
+
+func (this *UAEThank) Get() {
+	message := this.Ctx.Request.Header.Get("statusMessage")
+
+	var service, productName string
+	switch strings.ToUpper(this.Ctx.Input.Param(":kw")) {
+	case "GF":
+		service = "game"
+		productName = "Gold Finger"
+	case "MYA":
+		service = "anime"
+		productName = "My Anime"
+	case "POM":
+		service = "movie"
+		productName = "Poi Movie"
+	case "BB":
+		service = "build"
+		productName = "Bodybuild"
+	default:
+		this.Ctx.WriteString("400")
+		return
+	}
+	this.Data["message"] = message
+	this.Data["service"] = service
+	this.Data["product"] = productName
+	this.TplName = "uae/thank.html"
+}
