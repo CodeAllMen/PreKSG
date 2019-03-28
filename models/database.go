@@ -14,6 +14,7 @@ type Track struct {
 	ShortCode   string `orm:"size(10)"`
 	Keyword     string `orm:"size(10)"`
 	ProductName string `orm:"size(30)"`
+	Bd          string `orm:"size(10)"`
 
 	Time string `orm:"size(30);index"`
 
@@ -76,9 +77,6 @@ type MoStruct struct {
 	PostbackStatus  int
 	PostbackTime    string `orm:"size(30)"`
 	PostbackMessage string `orm:"size(30)"`
-
-	MtSend int
-	MtDay  int
 }
 
 type MtStruct struct {

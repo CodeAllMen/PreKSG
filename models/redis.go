@@ -72,7 +72,7 @@ func LoadPostback(camp_id string) (uint64, error) {
 	defer func() {
 		conn.Close()
 	}()
-	return rlib.Uint64(conn.Do("GET", "postback_"+camp_id))
+	return rlib.Uint64(conn.Do("GET", "postback_kc_"+camp_id))
 }
 
 func SetPostback() {
@@ -80,15 +80,32 @@ func SetPostback() {
 	defer func() {
 		conn.Close()
 	}()
-	conn.Do("SET", "postback_10000", 0)
-	conn.Do("SET", "postback_10001", 0)
-	conn.Do("SET", "postback_10002", 0)
-	conn.Do("SET", "postback_10003", 0)
-	conn.Do("SET", "postback_10004", 0)
-	conn.Do("SET", "postback_10005", 0)
-	conn.Do("SET", "postback_10006", 0)
-	conn.Do("SET", "postback_10007", 0)
-	conn.Do("SET", "postback_10008", 0)
+	conn.Do("SET", "postback_kc_10000", 0)
+	conn.Do("SET", "postback_kc_10001", 0)
+	conn.Do("SET", "postback_kc_10002", 0)
+	conn.Do("SET", "postback_kc_10003", 0)
+	conn.Do("SET", "postback_kc_10004", 0)
+	conn.Do("SET", "postback_kc_10005", 0)
+	conn.Do("SET", "postback_kc_10006", 0)
+	conn.Do("SET", "postback_kc_10007", 0)
+	conn.Do("SET", "postback_kc_10008", 0)
+
+	conn.Do("SET", "postback_kc_21101", 0)
+	conn.Do("SET", "postback_kc_21102", 0)
+	conn.Do("SET", "postback_kc_21103", 0)
+	conn.Do("SET", "postback_kc_21104", 0)
+	conn.Do("SET", "postback_kc_21105", 0)
+	conn.Do("SET", "postback_kc_21106", 0)
+	conn.Do("SET", "postback_kc_21107", 0)
+	conn.Do("SET", "postback_kc_21108", 0)
+	conn.Do("SET", "postback_kc_21109", 0)
+
+	conn.Do("SET", "postback_kc_5601", 0)
+	conn.Do("SET", "postback_kc_5602", 0)
+	conn.Do("SET", "postback_kc_5603", 0)
+	conn.Do("SET", "postback_kc_5604", 0)
+	conn.Do("SET", "postback_kc_5605", 0)
+	conn.Do("SET", "postback_kc_5606", 0)
 
 }
 
@@ -97,5 +114,5 @@ func IncrPostback(camp_id string) {
 	defer func() {
 		conn.Close()
 	}()
-	conn.Do("INCRBY", "postback_"+camp_id, 1)
+	conn.Do("INCRBY", "postback_kc_"+camp_id, 1)
 }

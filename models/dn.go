@@ -63,6 +63,11 @@ func InsertIntoDn(dnJson DnJson) {
 
 	if dn.SubType == "SUBSCRIBE" && dn.Status == "DELIVERED" {
 		SendSubMt(dn)
+		InsertIntoMo(dn)
+	}
+
+	if dn.SubType == "UNSUBSCRIBE" {
+		UnsubMo(dn)
 	}
 }
 
