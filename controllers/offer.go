@@ -62,6 +62,11 @@ func (this *Offer) Get() {
 		track.ProId = "zyy-uae-et"          //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
+	case "21108":
+		track.AffName = "Vene"
+		track.ProId = "zyy-uae-et"          //产品名
+		track.PubId = this.GetString("aid") //子渠道
+		track.ClickId = this.GetString("cid")
 
 	case "5601":
 		track.AffName = "mobvista"
@@ -70,6 +75,11 @@ func (this *Offer) Get() {
 		track.ClickId = this.GetString("cid")
 	case "5602":
 		track.AffName = "olimob"
+		track.ProId = "jq-uae-et"           //产品名
+		track.PubId = this.GetString("aid") //子渠道
+		track.ClickId = this.GetString("cid")
+	case "5603":
+		track.AffName = "mobipium"
 		track.ProId = "jq-uae-et"           //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
