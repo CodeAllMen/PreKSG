@@ -83,6 +83,11 @@ func (this *Offer) Get() {
 		track.ProId = "jq-uae-et"           //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
+	case "5604":
+		track.AffName = "clickmob"
+		track.ProId = "jq-uae-et"           //产品名
+		track.PubId = this.GetString("aid") //子渠道
+		track.ClickId = this.GetString("cid")
 	default:
 		this.Ctx.WriteString("400")
 		return
