@@ -99,9 +99,14 @@ func (this *Offer) Get() {
 	switch randNum {
 	case 0:
 		shortCode = "1111"
-		keyword = "GF"
-		productName = "Gold Finger"
-		service = "game"
+		keyword = "BB"
+		productName = "Bodybuild"
+		service = "build"
+	// case 0:
+	// 	shortCode = "1111"
+	// 	keyword = "GF"
+	// 	productName = "Gold Finger"
+	// 	service = "game"
 	case 1:
 		shortCode = "1111"
 		keyword = "MYA"
