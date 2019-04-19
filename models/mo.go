@@ -11,7 +11,6 @@ import (
 func InsertIntoMo(dn DnStruct) (int, string) {
 	o := orm.NewOrm()
 	var mo_old MoStruct
-	InsertIntoMo(dn)
 	o.QueryTable("mo_struct").Filter("msisdn", dn.Msisdn).Filter("shortcode", dn.Shortcode).Filter("keyword", dn.Keyword).One(&mo_old)
 	if mo_old.Id != 0 {
 		logs.Debug("sub error msisdn exist: ", dn.Msisdn)
