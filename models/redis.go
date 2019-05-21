@@ -99,6 +99,10 @@ func SetPostback() {
 	conn.Do("SET", "postback_kc_21107", 0)
 	conn.Do("SET", "postback_kc_21108", 0)
 	conn.Do("SET", "postback_kc_21109", 0)
+	conn.Do("SET", "postback_kc_21110", 0)
+	conn.Do("SET", "postback_kc_21111", 0)
+	conn.Do("SET", "postback_kc_21112", 0)
+	conn.Do("SET", "postback_kc_21113", 0)
 
 	conn.Do("SET", "postback_kc_5601", 0)
 	conn.Do("SET", "postback_kc_5602", 0)

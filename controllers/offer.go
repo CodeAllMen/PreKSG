@@ -20,6 +20,7 @@ func (this *Offer) Get() {
 	track.Agent = this.Ctx.Request.Header.Get("Agent")
 	track.Time = time.Now().Format("2006-01-02 15:04:05")
 	track.CampId = this.GetString("camp")
+	var op string
 	switch track.CampId {
 	case "10000":
 		track.AffName = ""
@@ -32,62 +33,105 @@ func (this *Offer) Get() {
 		track.ProId = "zyy-uae-et"          //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
+		op = "et"
 	case "21102":
 		track.AffName = "superADS"
 		track.ProId = "zyy-uae-et"          //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
+		op = "et"
 	case "21103":
 		track.AffName = "adorca"
 		track.ProId = "zyy-uae-et"          //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
+		op = "et"
 	case "21104":
 		track.AffName = "bitterstrawberry"
 		track.ProId = "zyy-uae-et"          //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
+		op = "et"
 	case "21105":
 		track.AffName = "mobisummer"
 		track.ProId = "zyy-uae-et"          //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
+		op = "et"
 	case "21106":
 		track.AffName = "dgmax"
 		track.ProId = "zyy-uae-et"          //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
+		op = "et"
 	case "21107":
 		track.AffName = "dgmax"
 		track.ProId = "zyy-uae-et"          //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
+		op = "et"
 	case "21108":
 		track.AffName = "Vene"
 		track.ProId = "zyy-uae-et"          //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
+		op = "et"
 
 	case "5601":
 		track.AffName = "mobvista"
 		track.ProId = "jq-uae-et"           //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
+		op = "et"
 	case "5602":
 		track.AffName = "olimob"
 		track.ProId = "jq-uae-et"           //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
+		op = "et"
 	case "5603":
 		track.AffName = "mobipium"
 		track.ProId = "jq-uae-et"           //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
+		op = "et"
 	case "5604":
 		track.AffName = "clickmob"
 		track.ProId = "jq-uae-et"           //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
+		op = "et"
+	case "5605":
+		track.AffName = "adorca"
+		track.ProId = "jq-uae-du"           //产品名
+		track.PubId = this.GetString("aid") //子渠道
+		track.ClickId = this.GetString("cid")
+		op = "du"
+	case "5606":
+		track.AffName = "hyperclick"
+		track.ProId = "jq-uae-et"           //产品名
+		track.PubId = this.GetString("aid") //子渠道
+		track.ClickId = this.GetString("cid")
+		op = "et"
+	case "5607":
+		track.AffName = "hyperclick"
+		track.ProId = "jq-uae-du"           //产品名
+		track.PubId = this.GetString("aid") //子渠道
+		track.ClickId = this.GetString("cid")
+		op = "du"
+
+	case "21109":
+		track.AffName = "olimob"
+		track.ProId = "jq-uae-du"           //产品名
+		track.PubId = this.GetString("aid") //子渠道
+		track.ClickId = this.GetString("cid")
+		op = "du"
+	case "21110":
+		track.AffName = "clickmob"
+		track.ProId = "jq-uae-du"           //产品名
+		track.PubId = this.GetString("aid") //子渠道
+		track.ClickId = this.GetString("cid")
+		op = "du"
 	default:
 		this.Ctx.WriteString("400")
 		return
@@ -134,6 +178,6 @@ func (this *Offer) Get() {
 	this.Data["key"] = keyword
 	this.Data["service"] = service
 	this.Data["ptxid"] = id_str
-	this.TplName = "uae/offer.html"
+	this.TplName = "uae/" + op + ".html"
 
 }
