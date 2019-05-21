@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/plugins/cors"
 
 	_ "github.com/MobileCPX/PreKSG/initial"
 	"github.com/MobileCPX/PreKSG/models"
@@ -19,5 +20,11 @@ func main() {
 	// cr.AddFunc("0 0 9 * * ?", models.SendMtDaidly)
 	// cr.AddFunc("0 0 0 * * 1", models.SetDigiMtSum)
 	cr.Start()
+	beego.InsertFilter("*", beego.BeforeRouter, cors.Allow(&cors.Options{
+		AllowAllOrigins: true,
+		AllowMethods:    []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:    []string{"Origin", "Authorization", "Access-Control-Allow-Origin", "Content-Type"},
+		ExposeHeaders:   []string{"Content-Length", "Access-Control-Allow-Origin"},
+	}))
 	beego.Run()
 }
