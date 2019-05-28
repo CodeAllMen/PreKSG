@@ -91,55 +91,79 @@ func (this *Offer) Get() {
 		op = "et"
 	case "5603":
 		track.AffName = "mobipium"
-		track.ProId = "jq-uae-et"           //产品名
+		track.ProId = "zyy-uae-et"          //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
 		op = "et"
 	case "5604":
 		track.AffName = "clickmob"
-		track.ProId = "jq-uae-et"           //产品名
+		track.ProId = "zyy-uae-et"          //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
 		op = "et"
 	case "5605":
 		track.AffName = "adorca"
-		track.ProId = "jq-uae-du"           //产品名
+		track.ProId = "zyy-uae-du"          //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
 		op = "du"
 	case "5606":
 		track.AffName = "hyperclick"
-		track.ProId = "jq-uae-et"           //产品名
+		track.ProId = "zyy-uae-et"          //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
 		op = "et"
 	case "5607":
 		track.AffName = "hyperclick"
-		track.ProId = "jq-uae-du"           //产品名
+		track.ProId = "zyy-uae-du"          //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
 		op = "du"
 	case "5608":
 		track.AffName = "funnymobi"
-		track.ProId = "jq-uae-et"           //产品名
+		track.ProId = "zyy-uae-et"          //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
 		op = "et"
 	case "5609":
 		track.AffName = "funnymobi"
-		track.ProId = "jq-uae-du"           //产品名
+		track.ProId = "zyy-uae-du"          //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
 		op = "du"
 	case "5610":
 		track.AffName = "mobisummer"
-		track.ProId = "jq-uae-et"           //产品名
+		track.ProId = "zyy-uae-et"          //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
 		op = "et"
 	case "5611":
 		track.AffName = "mobisummer"
-		track.ProId = "jq-uae-du"           //产品名
+		track.ProId = "zyy-uae-du"          //产品名
+		track.PubId = this.GetString("aid") //子渠道
+		track.ClickId = this.GetString("cid")
+		op = "du"
+	case "5612":
+		track.AffName = "addiliate"
+		track.ProId = "zyy-uae-et"          //产品名
+		track.PubId = this.GetString("aid") //子渠道
+		track.ClickId = this.GetString("cid")
+		op = "et"
+	case "5613":
+		track.AffName = "addiliate"
+		track.ProId = "zyy-uae-du"          //产品名
+		track.PubId = this.GetString("aid") //子渠道
+		track.ClickId = this.GetString("cid")
+		op = "du"
+	case "5614":
+		track.AffName = "mobrider"
+		track.ProId = "zyy-uae-et"          //产品名
+		track.PubId = this.GetString("aid") //子渠道
+		track.ClickId = this.GetString("cid")
+		op = "et"
+	case "5615":
+		track.AffName = "mobrider"
+		track.ProId = "zyy-uae-du"          //产品名
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
 		op = "du"
