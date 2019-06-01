@@ -167,6 +167,18 @@ func (this *Offer) Get() {
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
 		op = "du"
+	case "5616":
+		track.AffName = "flex"
+		track.ProId = "zyy-uae-et"          //产品名
+		track.PubId = this.GetString("aid") //子渠道
+		track.ClickId = this.GetString("cid")
+		op = "et"
+	case "5617":
+		track.AffName = "flex"
+		track.ProId = "zyy-uae-du"          //产品名
+		track.PubId = this.GetString("aid") //子渠道
+		track.ClickId = this.GetString("cid")
+		op = "du"
 
 	case "21109":
 		track.AffName = "olimob"

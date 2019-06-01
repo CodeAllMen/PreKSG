@@ -110,6 +110,18 @@ func SetPostback() {
 	conn.Do("SET", "postback_kc_5604", 0)
 	conn.Do("SET", "postback_kc_5605", 0)
 	conn.Do("SET", "postback_kc_5606", 0)
+	conn.Do("SET", "postback_kc_5608", 0)
+	conn.Do("SET", "postback_kc_5609", 0)
+	conn.Do("SET", "postback_kc_5610", 0)
+	conn.Do("SET", "postback_kc_5611", 0)
+	conn.Do("SET", "postback_kc_5612", 0)
+	conn.Do("SET", "postback_kc_5613", 0)
+	conn.Do("SET", "postback_kc_5614", 0)
+	conn.Do("SET", "postback_kc_5615", 0)
+	conn.Do("SET", "postback_kc_5616", 0)
+	conn.Do("SET", "postback_kc_5617", 0)
+	conn.Do("SET", "postback_kc_5618", 0)
+	conn.Do("SET", "postback_kc_5619", 0)
 
 }
 
