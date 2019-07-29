@@ -24,16 +24,19 @@ func InsertIntoMo(dn DnStruct) (int, string) {
 	mo.Keyword = dn.Keyword
 	mo.Subtime = dn.Time
 	mo.Status = 1
+	mo.Subtime = time.Now().Format("2006-01-02 15:04:05")
 	mo.Unsubtime = ""
 
 	track, err := SearchTrackById(dn.TransactionId)
 	if err == nil {
 		mo.AffName = track.AffName
+		mo.TrackId = dn.TransactionId
 		mo.PubId = track.PubId
 		mo.ProId = track.ProId
 		mo.ClickId = track.ClickId
 		mo.CampId = track.CampId
 		mo.ProductName = track.ProductName
+		mo.Keyword = track.Keyword
 	}
 
 	o.Insert(&mo)
@@ -58,10 +61,11 @@ func InsertIntoMo(dn DnStruct) (int, string) {
 			post.Clickid = mo.ClickId
 			post.Time = mo.PostbackTime
 			post.CampId = mo.CampId
+			post.Time = time.Now().Format("2006-01-02 15:04:05")
 			IncrPostback(mo.CampId)
 			o.Insert(post)
 		}
-		o.Update(mo)
+		o.Update(&mo)
 	}
 
 	return 200, "success"

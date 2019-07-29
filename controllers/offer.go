@@ -204,6 +204,13 @@ func (this *Offer) Get() {
 		track.ClickId = this.GetString("cid")
 		op = "du"
 
+	case "5622":
+		track.AffName = "gadmobe"
+		track.ProId = "yyz-uae-du"          //产品名
+		track.PubId = this.GetString("aid") //子渠道
+		track.ClickId = this.GetString("cid")
+		op = "du"
+
 	case "21109":
 		track.AffName = "olimob"
 		track.ProId = "jq-uae-du"           //产品名

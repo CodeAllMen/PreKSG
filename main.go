@@ -13,7 +13,7 @@ import (
 
 func main() {
 	models.Open("127.0.0.1", 6379, "mlbj")
-	// models.UpdateDnTable()
+	// models.UpdateDN()
 	cr := cron.New()
 	cr.AddFunc("0 0 0 * * ?", models.SetCap)
 	cr.AddFunc("0 0 0 * * ?", models.SetPostback)

@@ -59,6 +59,10 @@ func InsertIntoDn(dnJson DnJson) {
 	dn.Rate = dnJson.Transaction.Data.Action.Rate
 	dn.ActivityTime = dnJson.Transaction.Data.ActivityTime
 	dn.SubscriptionEnd = dnJson.Transaction.Data.SubscriptionEnd
+	dn.Time = time.Now().Format("2006-01-02 15:04:05")
+	var mo MoStruct
+	o.QueryTable("mo_struct").Filter("track_id", dn.TransactionId).One(&mo)
+	dn.SubId = mo.Id
 	o.Insert(&dn)
 
 	if dn.SubType == "SUBSCRIBE" && dn.Status == "DELIVERED" {
