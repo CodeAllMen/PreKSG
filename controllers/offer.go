@@ -223,12 +223,35 @@ func (this *Offer) Get() {
 		track.PubId = this.GetString("aid") //子渠道
 		track.ClickId = this.GetString("cid")
 		op = "du"
+	case "21111":
+		track.AffName = "olimob"
+		track.ProId = "jq-uae-du"           //产品名
+		track.PubId = this.GetString("aid") //子渠道
+		track.ClickId = this.GetString("cid")
+		op = "du"
+	case "21112":
+		track.AffName = "olimob"
+		track.ProId = "jq-uae-et"           //产品名
+		track.PubId = this.GetString("aid") //子渠道
+		track.ClickId = this.GetString("cid")
+		op = "et"
+	case "21113":
+		track.AffName = "Avatar"
+		track.ProId = "yyz-uae-et"           //产品名
+		track.PubId = this.GetString("aid") //子渠道
+		track.ClickId = this.GetString("cid")
+		op = "et"
 	default:
 		this.Ctx.WriteString("400")
 		return
 	}
 
 	randNum := rand.New(rand.NewSource(time.Now().Unix())).Intn(1)
+	// 选择产品
+	productID, _ := this.GetInt("p")
+	if productID != 0 && productID < 4 {
+		randNum = productID
+	}
 
 	var shortCode, keyword, productName, service string
 	switch randNum {
