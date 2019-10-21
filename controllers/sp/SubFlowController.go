@@ -34,6 +34,7 @@ func (c *SubFlowController) SubReq() {
 	track, err := models.SearchTrackById(ptxid)
 	if err != nil {
 		c.RedirectURL("http://google.com")
+		return
 	}
 	serviceName := track.Keyword + "-" + operator
 	serverInfo := c.getServiceConfig(strings.ToUpper(serviceName))
