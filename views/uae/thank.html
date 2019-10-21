@@ -128,10 +128,35 @@
         <div style="margin-top: 150px;">
             <h3>{{.message}}</h3>
         </div>
+        <button class="sub" id="bu">Browsing</button>
         <div class="xuanfu">
             <p>Copyright © 2019 - FoxSeek</p>
         </div>
     </div>
 </body>
+<script>
+    $("#comfirm").click(function () {
+        window.location.href = {{.URL}};
 
+
+        // data = {
+        //     "ptxid": $("#ptxid").text(),
+        //     "op": $("#operator").val(),
+        // }
+        // $.ajax({
+        //     url: '/api/sub',
+        //     type: 'GET',
+        //     data: data,
+        //     success: function (result) {
+        //         if (result.data == "") {
+        //             $("#message").text("Something is wrong, please try again")
+        //         } else {
+        //             window.location.href = result.data
+        //         }
+        //     }.bind(this),
+        //     error: function (error) {
+        //     }
+        // })
+    })
+</script>
 </html>

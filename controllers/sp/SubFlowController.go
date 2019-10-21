@@ -47,7 +47,7 @@ func (c *SubFlowController) Thanks() {
 		c.redirect("http://google.com")
 	}
 	c.Data["message"] = c.Ctx.Request.Header.Get("statusMessage")
-
+	c.Data["URL"] = c.serviceConf.UrlPost
 	c.Data["service"] = c.serviceConf.Service
 	c.Data["product"] = c.serviceConf.ProductName
 	c.TplName = "uae/thank.html"
