@@ -32,21 +32,49 @@ type Data struct {
 	CountryId       string `json:"countryId"`
 	OperatorId      string `json:"operatorId"`
 	Msisdn          string `json:"msisdn"`
-	Action          `json:"action"`
+	Action          Action `json:"action"`
 	ActivityTime    string `json:"activityTime"`
 	SubscriptionEnd string `json:"subscriptionEnd"`
 }
 
 type Transaction struct {
 	TransactionId string `json:"transactionId"`
-	Data          `json:"data"`
+	Data          Data   `json:"data"`
+}
+
+type DnJson struct {
+	ID          int64 `orm:"pk;auto;column(id)"`
+	SendTime    string
+	RequestId   string      `json:"requestId"`
+	Transaction Transaction `json:"transaction"`
 }
 
 type ChargeNotification struct {
-	ID          int64 `orm:"pk;auto;column(id)"`
-	SendTime    string
-	RequestId   string `json:"requestId"`
-	Transaction `json:"transaction"`
+	Id              int64  `orm:"pk;auto"`
+	Keyword         string `orm:"size(20);index"`
+	Price           string `orm:"size(10);;index"`
+	Time            string `orm:"size(30);index"`
+	SubId           int64
+	AffName         string `orm:"size(50);index"`
+	PubId           string `orm:"size(100);index"`
+	Charge          string
+	DnStatus        int    `orm:"index"`
+	RequestId       string `orm:"size(100)"`
+	TransactionId   string `orm:"size(100)"`
+	Shortcode       string `orm:"size(100)"`
+	ChannelId       string `orm:"size(100)"`
+	ApplicationId   string `orm:"size(100)"`
+	Country         string `orm:"size(100)"`
+	OperatorId      string `orm:"size(100)"`
+	Msisdn          string `orm:"size(100)"`
+	Mtid            string `orm:"size(100)"`
+	ActivityTime    string `orm:"size(100)"`
+	SubscriptionEnd string `orm:"size(100)"`
+	Type            string `orm:"size(100)"`
+	SubType         string `orm:"size(100)"`
+	Status          string `orm:"size(100)"`
+	Rate            string `orm:"size(100)"`
+	SendTime        string
 }
 
 func (charge *ChargeNotification) Insert() {

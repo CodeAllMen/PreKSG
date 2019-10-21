@@ -42,9 +42,37 @@ type PostParseForm struct {
 func (c *NotificationController) Post() {
 
 	body, _ := ioutil.ReadAll(c.Ctx.Request.Body)
-	var reqFormData *sp.ChargeNotification
-	err := json.Unmarshal([]byte(body), reqFormData)
-	logs.Info("notification 通知:", reqFormData)
+	var dnJson sp.DnJson
+	err := json.Unmarshal(body, &dnJson)
+	if err != nil {
+		return
+	}
+	logs.Info("notification 通知:", dnJson)
+	var reqFormData sp.ChargeNotification
+	if dnJson != (sp.DnJson{}) {
+		reqFormData.RequestId = dnJson.RequestId
+		if dnJson.Transaction != (sp.Transaction{}) {
+			reqFormData.TransactionId = dnJson.Transaction.TransactionId
+			if dnJson.Transaction.Data != (sp.Data{}) {
+				reqFormData.Shortcode = dnJson.Transaction.Data.Shortcode
+				reqFormData.ChannelId = dnJson.Transaction.Data.ChannelId
+				reqFormData.ApplicationId = dnJson.Transaction.Data.ApplicationId
+				reqFormData.Country = dnJson.Transaction.Data.CountryId
+				reqFormData.OperatorId = dnJson.Transaction.Data.OperatorId
+				reqFormData.Msisdn = dnJson.Transaction.Data.Msisdn
+				reqFormData.ActivityTime = dnJson.Transaction.Data.ActivityTime
+				reqFormData.SubscriptionEnd = dnJson.Transaction.Data.SubscriptionEnd
+				if dnJson.Transaction.Data.Action != (sp.Action{}) {
+					reqFormData.Type = dnJson.Transaction.Data.Action.Type
+					reqFormData.SubType = dnJson.Transaction.Data.Action.SubType
+					reqFormData.Status = dnJson.Transaction.Data.Action.Status
+					reqFormData.Rate = dnJson.Transaction.Data.Action.Rate
+				}
+			}
+
+		}
+	}
+
 	track := new(sp.AffTrack)
 	if err != nil {
 		logs.Error("notification ERROR,接收通知错误", err.Error())
@@ -61,7 +89,7 @@ func (c *NotificationController) Post() {
 	// 通过trackID 查询 点击数据
 	trackID, _ := strconv.Atoi(reqFormData.TransactionId)
 	if trackID != 0 {
-		track.TrackID, _ = strconv.ParseInt(reqFormData.Transaction.TransactionId, 10, 64)
+		track.TrackID, _ = strconv.ParseInt(reqFormData.TransactionId, 10, 64)
 		_ = track.GetOne(tracking.ByTrackID)
 		serverConfig = c.getServiceConfig(track.ServiceID)
 		//sp.SendMt(serverConfig, reqFormData)
@@ -109,7 +137,7 @@ func (c *NotificationController) Post() {
 
 		// 订阅成功后注册服务
 		go servicelib.AddOrDeleteUserService(serverConfig.UrlPost, moT.Msisdn, moT.SubscriptionID)
-		sp.SendMt(serverConfig, reqFormData)
+		sp.SendMt(serverConfig, &reqFormData)
 
 	}
 
@@ -117,7 +145,7 @@ func (c *NotificationController) Post() {
 	if moT.ID != 0 {
 		if reqFormData.SubType == "Renewal" && reqFormData.Status == "Delivered" { // 成功扣费通知
 			notificationType, _ = moT.AddSuccessMTNum(notify.SubscriptionId, notify.TransactionID)
-			sp.SendMt(serverConfig, reqFormData)
+			sp.SendMt(serverConfig, &reqFormData)
 		} else if reqFormData.SubType == "Renewal" && reqFormData.Status != "Failed" { // 失败扣费通知
 			notificationType, _ = moT.AddFailedMTNum(notify.SubscriptionId, notify.TransactionID)
 		} else if reqFormData.SubType == "Unsubscribe" && reqFormData.Status == "Delivered" { // 退订通知
