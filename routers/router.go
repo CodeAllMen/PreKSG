@@ -13,13 +13,14 @@ func init() {
 
 	//泰国
 	beego.Router("/:mode/:kw", &controllers.UAELP{})
-	beego.Router("/api/:mode", &controllers.APIController{})
+	//beego.Router("/api/:mode", &controllers.APIController{})
 
 	//数据查询
 	beego.Router("/aff_data", &controllers.AffController{}) //获取渠道订阅信息
 
 	beego.Router("/lp/:serviceType/:operator", &sp.LpController{}, "*:LpSub")
-	beego.Router("/sub/req/:trackID", &sp.SubFlowController{}, "*:SubReq")
+	beego.Router("/api/sub", &sp.SubFlowController{}, "*:SubReq")
+	beego.Router("/api/dn", &sp.NotificationController{})
 	beego.Router("/thank/:trackID", &sp.SubFlowController{}, "*:Thanks")
 
 	//postback

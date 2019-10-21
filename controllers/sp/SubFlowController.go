@@ -2,9 +2,11 @@ package sp
 
 import (
 	"fmt"
+	"github.com/MobileCPX/PreKSG/models"
 	"github.com/MobileCPX/PreKSG/models/sp"
 	"github.com/MobileCPX/PreKSG/service"
 	"github.com/astaxie/beego/logs"
+	"strings"
 )
 
 type SubFlowController struct {
@@ -27,8 +29,16 @@ func (c *SubFlowController) Prepare() {
 func (c *SubFlowController) SubReq() {
 	logs.Info("SubReq: ", c.Ctx.Input.URI())
 	//获取AOC连接
+	ptxid := c.GetString("ptxid")
+	operator := c.GetString("op")
+	track, err := models.SearchTrackById(ptxid)
+	if err != nil {
+		c.RedirectURL("http://google.com")
+	}
+	serviceName := track.Keyword + "-" + operator
+	serverInfo := c.getServiceConfig(strings.ToUpper(serviceName))
 	//track :=c.trackClickData
-	res := service.SubService(c.serviceConf, c.trackClickData)
+	res := service.SubService(serverInfo, c.trackClickData)
 	//c.Data["json"] = map[string]string{
 	//	"data": res,
 	//}
