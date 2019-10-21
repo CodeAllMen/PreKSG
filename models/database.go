@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/MobileCPX/PreKSG/models/sp"
 	"github.com/astaxie/beego/orm"
 )
 
@@ -15,22 +16,17 @@ type Track struct {
 	Keyword     string `orm:"size(10)"`
 	ProductName string `orm:"size(30)"`
 	Bd          string `orm:"size(10)"`
-
-	Time string `orm:"size(30);index"`
-
-	Ip    string `orm:"size(30)"`
-	Agent string `orm:"size(300)"`
-
+	Time        string `orm:"size(30);index"`
+	Ip          string `orm:"size(30)"`
+	Agent       string `orm:"size(300)"`
 	ClickStatus string `orm:"size(10)"`
 	ClickTime   string `orm:"size(30)"`
-
-	Operator string `orm:"size(10)"`
-
-	AocUrl   string `orm:"size(300)"`
-	AocError string `orm:"size(100)"`
+	Operator    string `orm:"size(10)"`
+	AocUrl      string `orm:"size(300)"`
+	AocError    string `orm:"size(100)"`
 }
 
-type Postback struct {
+type Old_Postback struct {
 	Id       int64  `orm:"pk;auto"`
 	CampId   string `orm:"size(20)"`
 	AffName  string `orm:"size(255)"`
@@ -127,5 +123,5 @@ type DnStruct struct {
 }
 
 func init() {
-	orm.RegisterModel(new(Track), new(Postback), new(PostbackRecord), new(MoStruct), new(DnStruct), new(MtStruct))
+	orm.RegisterModel(new(Track), new(Old_Postback), new(PostbackRecord), new(MoStruct), new(DnStruct), new(MtStruct), new(sp.Postback), new(sp.AffTrack))
 }

@@ -177,24 +177,27 @@
         $("#en-div").addClass("noexit")
     })
     $("#comfirm").click(function () {
-        data = {
-            "ptxid": $("#ptxid").text(),
-            "op": $("#operator").val(),
-        }
-        $.ajax({
-            url: '/api/sub',
-            type: 'GET',
-            data: data,
-            success: function (result) {
-                if (result.data == "") {
-                    $("#message").text("Something is wrong, please try again")
-                } else {
-                    window.location.href = result.data
-                }
-            }.bind(this),
-            error: function (error) {
-            }
-        })
+        window.location.href = {{.URL}};
+
+
+        // data = {
+        //     "ptxid": $("#ptxid").text(),
+        //     "op": $("#operator").val(),
+        // }
+        // $.ajax({
+        //     url: '/api/sub',
+        //     type: 'GET',
+        //     data: data,
+        //     success: function (result) {
+        //         if (result.data == "") {
+        //             $("#message").text("Something is wrong, please try again")
+        //         } else {
+        //             window.location.href = result.data
+        //         }
+        //     }.bind(this),
+        //     error: function (error) {
+        //     }
+        // })
     }) 
 </script>
 

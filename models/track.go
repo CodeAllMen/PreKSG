@@ -37,8 +37,8 @@ func UpdateTrackById(track *Track) {
 	o.Update(track)
 }
 
-func Get_postback_url(camp_id string) (error, *Postback) {
-	var postback Postback
+func Get_postback_url(camp_id string) (error, *Old_Postback) {
+	var postback Old_Postback
 	o := orm.NewOrm()
 	err := o.QueryTable("postback").Filter("camp_id", camp_id).One(&postback)
 	if err != nil {
@@ -59,7 +59,7 @@ func PostbackRate(mo *MoStruct, rate int) bool {
 	return status
 }
 
-func PostbackRequest(mo *MoStruct, postback *Postback) (string, string) { // postback请求
+func PostbackRequest(mo *MoStruct, postback *Old_Postback) (string, string) { // postback请求
 	var urls, code string
 	code = "400"
 	url_model := postback.Url

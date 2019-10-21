@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/MobileCPX/PreKSG/models/sp"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/plugins/cors"
 
@@ -11,6 +12,9 @@ import (
 	"github.com/robfig/cron"
 )
 
+func init() {
+	sp.InitServiceConfig()
+}
 func main() {
 	models.Open("127.0.0.1", 6379, "mlbj")
 	// models.UpdateDN()
