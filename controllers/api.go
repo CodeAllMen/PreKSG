@@ -3,10 +3,9 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-
 	"github.com/MobileCPX/PreKSG/models"
 	"github.com/astaxie/beego"
+	"io/ioutil"
 )
 
 type APIController struct {

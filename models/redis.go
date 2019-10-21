@@ -2,10 +2,9 @@ package models
 
 import (
 	"fmt"
-	"time"
 
-	log "github.com/cihub/seelog"
 	rlib "github.com/garyburd/redigo/redis"
+	"time"
 )
 
 var (
@@ -31,7 +30,6 @@ func newPool(host string, port int, password string) *rlib.Pool {
 		Dial: func() (rlib.Conn, error) {
 			c, err := rlib.Dial("tcp", fmt.Sprintf("%s:%d", host, port), rlib.DialPassword(password))
 			if err != nil {
-				log.Error("failed to dial redis server:", err)
 				return nil, err
 			}
 			return c, err

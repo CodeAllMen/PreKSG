@@ -81,7 +81,6 @@ func SendSubMt(dn DnStruct) {
 
 	url := "http://ksg.kncee.com/MSG/v1.1/API/SendSMS?applicationId=%s&countryId=%s&operatorId=%s&MSISDN=%s" +
 		"&cpId=%s&requestId=%s&apiKey=%s&signature=%s&timestamp=%s&lang=%s&shortcode=%s&msgText=%s"
-
 	var shortCode, countryId, applicationId, cpId, apiKey, apiSecret, urlPost string
 	timestamp := strconv.Itoa(int(time.Now().Unix()))
 	var signature, operatorId, msgText string

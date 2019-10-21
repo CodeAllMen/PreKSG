@@ -1,10 +1,5 @@
 package models
 
-import (
-	"github.com/MobileCPX/PreKSG/models/sp"
-	"github.com/astaxie/beego/orm"
-)
-
 type Track struct {
 	Id          int64  `orm:"pk;auto"`
 	CampId      string `orm:"size(20);index"`
@@ -122,6 +117,6 @@ type DnStruct struct {
 	Rate            string `orm:"size(100)"`
 }
 
-func init() {
-	orm.RegisterModel(new(Track), new(Old_Postback), new(PostbackRecord), new(MoStruct), new(DnStruct), new(MtStruct), new(sp.Postback), new(sp.AffTrack))
-}
+//func init() {
+//	orm.RegisterModel(new(Track), new(Old_Postback), new(PostbackRecord), new(MoStruct), new(DnStruct), new(MtStruct), new(sp.Postback), new(sp.AffTrack))
+//}
