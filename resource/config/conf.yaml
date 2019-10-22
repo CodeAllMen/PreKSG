@@ -21,6 +21,8 @@ service:
     cp_id : "9"
     msg_text: "Thank you for subscribing to Gold Finger service. You can visit the portal on http://ku.g0finger.com/. "
     url_post: "http://ku.g0finger.com/"
+    req_url: "user/add?name={msisdn}&pass={pass}"
+
   GF-DU:
     service_id: "GF-DU"
     service_name: "Gold Finger"
@@ -42,6 +44,7 @@ service:
     country_id: "247"
     cp_id: "9"
     url_post: "http://ku.g0finger.com/"
+    req_url: "user/add?name={msisdn}&pass={pass}"
 
   MYA-ET:
     service_id: "MYA-ET"
@@ -65,6 +68,7 @@ service:
     cp_id : "9"
     msg_text: "Thank you for subscribing to Gold Finger service. You can visit the portal on http://ar.abanime.com/"
     url_post: "http://ar.abanime.com/"
+    req_url: "user/add?name={msisdn}&pass={pass}"
     price: "11"
   MYA-DU:
     service_id: "MYA-DU"
@@ -88,6 +92,7 @@ service:
     cp_id: "9"
     msg_text: "Thank you for subscribing to Gold Finger service. You can visit the portal on http://ar.abanime.com/"
     url_post: "http://ar.abanime.com/"
+    req_url: "user/add?name={msisdn}&pass={pass}"
     price: "11"
   POM-ET:
     service_id: "POM-ET"
@@ -111,6 +116,7 @@ service:
     cp_id: "9"
     msgText : "Thank you for subscribing to Gold Finger service. You can visit the portal on http://ar.poimovie.com/. "
     url_post: "http://ar.poimovie.com/"
+    req_url: "user/add?name={msisdn}&pass={pass}"
     price: "11"
   POM-DU:
     service_id: "POM-DU"
@@ -134,6 +140,7 @@ service:
     cp_id: "9"
     msgText: "Thank you for subscribing to Gold Finger service. You can visit the portal on http://ar.poimovie.com/. "
     url_post: "http://ar.poimovie.com/"
+    req_url: "user/add?name={msisdn}&pass={pass}"
     price: "11"
   BB-ET:
     service_id: "BB-ET"
@@ -156,6 +163,7 @@ service:
     country_id: "247"
     cp_id: "9"
     url_post: "http://ar.fit8tube.com/"
+    req_url: "user/add?name={msisdn}&pass={pass}"
     price: "11"
   BB-DU:
     service_id: "BB-DU"
@@ -178,5 +186,6 @@ service:
     country_id: "247"
     cp_id: "9"
     url_post : "http://ar.fit8tube.com/"
+    req_url: "user/add?name={msisdn}&pass={pass}"
     price: "11"
 

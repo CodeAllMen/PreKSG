@@ -4,6 +4,7 @@ import (
 	"github.com/MobileCPX/PreBaseLib/splib/mo"
 	"github.com/MobileCPX/PreBaseLib/splib/tracking"
 	"github.com/MobileCPX/PreKSG/models/sp"
+	"github.com/astaxie/beego/logs"
 	"strconv"
 )
 
@@ -50,7 +51,7 @@ func (c *TrackingController) InsertAffClick() {
 	if returnStr != "false" {
 		returnStr = strconv.Itoa(int(trackID)) // 返回自增ID
 	}
-
+	logs.Info(returnStr)
 	c.StringResult(returnStr)
 
 }

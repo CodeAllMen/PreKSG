@@ -2,10 +2,13 @@ package sp
 
 import (
 	"fmt"
-	"github.com/MobileCPX/PreKSG/models"
+	"github.com/MobileCPX/PreBaseLib/splib/tracking"
 	"github.com/MobileCPX/PreKSG/models/sp"
 	"github.com/MobileCPX/PreKSG/service"
+	"github.com/astaxie/beego/httplib"
 	"github.com/astaxie/beego/logs"
+	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -28,18 +31,17 @@ func (c *SubFlowController) Prepare() {
 }
 func (c *SubFlowController) SubReq() {
 	logs.Info("SubReq: ", c.Ctx.Input.URI())
+	var err error
+	track := new(sp.AffTrack)
+	track.TrackID, err = strconv.ParseInt(c.Ctx.Input.Param(":trackID"), 10, 64)
+	err = track.GetOne(tracking.ByTrackID)
 	//获取AOC连接
-	ptxid := c.GetString("ptxid")
-	operator := c.GetString("op")
-	track, err := models.SearchTrackById(ptxid)
 	if err != nil {
 		c.RedirectURL("http://google.com")
 		return
 	}
-	serviceName := track.Keyword + "-" + operator
-	serverInfo := c.getServiceConfig(strings.ToUpper(serviceName))
-	//track :=c.trackClickData
-	res := service.SubService(serverInfo, c.trackClickData)
+	serviceConf := c.getServiceConfig(track.ServiceID)
+	res := service.SubService(serviceConf, track)
 	//c.Data["json"] = map[string]string{
 	//	"data": res,
 	//}
@@ -56,6 +58,24 @@ func (c *SubFlowController) Thanks() {
 	track := c.trackClickData
 	if track.TrackID == 0 {
 		c.redirect("http://google.com")
+	}
+	URL := "http://kg.foxseek.com" + c.Ctx.Input.URI()
+	if strings.Contains(URL, "?") {
+		URL = URL + "&status=1"
+	} else {
+
+	}
+
+	if c.GetString("status") == "" {
+		// 生成随机id
+		randomStr, err := httplib.Get("http://offer.globaltraffictracking.com/sub_success/req?url=" +
+			url.QueryEscape(URL)).String()
+		if err == nil && len(randomStr) > 3 {
+			if randomStr[:2] == "AA" {
+				//订阅成功记录订阅ID
+				c.redirect("http://offer.globaltraffictracking.com/sub_track/" + randomStr + "?sub=" + strconv.Itoa(int(c.trackClickData.TrackID)))
+			}
+		}
 	}
 	c.Data["message"] = c.Ctx.Request.Header.Get("statusMessage")
 	c.Data["URL"] = c.serviceConf.UrlPost

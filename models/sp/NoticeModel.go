@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"github.com/MobileCPX/PreBaseLib/util"
+	"github.com/astaxie/beego/httplib"
 	"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego/orm"
 	"io/ioutil"
@@ -137,13 +138,20 @@ func HmacSha256(message, secret []byte) string {
 	return encode
 }
 
-func AddUser(url, name, pass string) {
+func AddUser(reqURL, msisdn, pass string) {
 
-	client := &http.Client{}
-	urlPost := url + "user/add?user=" + name + "&pass=" + pass + "&sign=ksg"
-	reqjson, _ := http.NewRequest("POST", urlPost, nil)
-	res, _ := client.Do(reqjson)
-	defer res.Body.Close()
+	reqURL = strings.Replace(reqURL, "{msisdn}", msisdn, -1)
+	reqURL = strings.Replace(reqURL, "{pass}", pass, -1)
+	result, err := httplib.Get(reqURL).String()
+	logs.Info("RequestService", result)
+	if err != nil {
+		logs.Info("添加用户或者删除用户失败，", reqURL)
+	}
+	//client := &http.Client{}
+	//urlPost := url + "user/add?user=" + name + "&pass=" + pass + "&sign=ksg"
+	//reqjson, _ := http.NewRequest("POST", urlPost, nil)
+	//res, _ := client.Do(reqjson)
+	//defer res.Body.Close()
 }
 
 func RandUpString(l int) string {

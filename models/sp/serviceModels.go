@@ -33,6 +33,7 @@ type ServiceInfo struct {
 	CpId          string `yaml:"cp_id"`
 	UrlPost       string `yaml:"url_post"`
 	Price         string `yaml:"price"`
+	ReqUrl        string `yaml:"req_url"`
 }
 
 const (

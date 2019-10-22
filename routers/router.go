@@ -19,7 +19,7 @@ func init() {
 	beego.Router("/aff_data", &controllers.AffController{}) //获取渠道订阅信息
 
 	beego.Router("/lp/:serviceType/:operator", &sp.LpController{}, "*:LpSub")
-	beego.Router("/api/sub", &sp.SubFlowController{}, "*:SubReq")
+	beego.Router("/api/sub/:trackID/:op", &sp.SubFlowController{}, "*:SubReq")
 	beego.Router("/api/dn", &sp.NotificationController{})
 	beego.Router("/thank/:trackID", &sp.SubFlowController{}, "*:Thanks")
 

@@ -7,7 +7,6 @@ import (
 	"github.com/MobileCPX/PreBaseLib/splib/common"
 	"github.com/MobileCPX/PreBaseLib/splib/mo"
 	"github.com/MobileCPX/PreBaseLib/splib/notification"
-	"github.com/MobileCPX/PreBaseLib/splib/servicelib"
 	"github.com/MobileCPX/PreBaseLib/splib/tracking"
 	"github.com/MobileCPX/PreBaseLib/util"
 	"github.com/MobileCPX/PreKSG/models/sp"
@@ -39,7 +38,7 @@ type PostParseForm struct {
 // 扣费通知  command:[recurrentPayment] statusText:[Charged] time:[2019-06-06 09:54:58] amount:[500] trid:[668286775] statusNumber:[2] subscriptionId:[AT030159x01x1559807672429] msisdn:[00436643607604] serviceCode:[AT030159]]
 
 //Post 接收订阅退订续订通知
-func (c *NotificationController) Get() {
+func (c *NotificationController) Post() {
 
 	body, _ := ioutil.ReadAll(c.Ctx.Request.Body)
 	var dnJson sp.DnJson
@@ -112,7 +111,7 @@ func (c *NotificationController) Get() {
 
 	// 新订阅通知 ，没有找到此订阅信息，需要重新插入mo数据
 	notificationType := ""
-	if reqFormData.SubType == "SUBSCRIBE" && reqFormData.Status == "Delivered" {
+	if reqFormData.SubType == "SUBSCRIBE" && reqFormData.Status == "DELIVERED" {
 
 		// 检查subID是否已经存在
 		if err == nil && moT.ID != 0 { // 订阅ID 已经存在，重复通知
@@ -136,18 +135,18 @@ func (c *NotificationController) Get() {
 		moT, notificationType = splib.InsertMO(moBase, false, postbackStatus, serverConfig.ProductName)
 
 		// 订阅成功后注册服务
-		go servicelib.AddOrDeleteUserService(serverConfig.UrlPost, moT.Msisdn, moT.SubscriptionID)
+		go sp.AddUser(serverConfig.UrlPost+serverConfig.ReqUrl, moT.Msisdn, moT.SubscriptionID)
 		sp.SendMt(serverConfig, &reqFormData)
 
 	}
 
 	// 扣费，退订通知
-	if reqFormData.SubType == "Renewal" && reqFormData.Status == "Delivered" { // 成功扣费通知
+	if reqFormData.SubType == "RENEWAL" && reqFormData.Status == "DELIVERED" { // 成功扣费通知
 		notificationType, _ = moT.AddSuccessMTNum(notify.SubscriptionId, notify.TransactionID)
-		sp.SendMt(serverConfig, &reqFormData)
-	} else if reqFormData.SubType == "Renewal" && reqFormData.Status != "Failed" { // 失败扣费通知
+		//sp.SendMt(serverConfig, &reqFormData)
+	} else if reqFormData.SubType == "RENEWAL" && reqFormData.Status != "Failed" { // 失败扣费通知
 		notificationType, _ = moT.AddFailedMTNum(notify.SubscriptionId, notify.TransactionID)
-	} else if reqFormData.SubType == "Unsubscribe" && reqFormData.Status == "Delivered" { // 退订通知
+	} else if reqFormData.SubType == "UNSUBSCRIBE" && reqFormData.Status == "DELIVERED" { // 退订通知
 		notificationType, _ = moT.UnsubUpdateMo(notify.SubscriptionId)
 	}
 
@@ -179,7 +178,7 @@ func (c *NotificationController) Get() {
 
 		sendNoti.Sendtime = nowTime
 		sendNoti.NotificationType = notificationType
-		sendNoti.SendData(admindata.PROD)
+		//sendNoti.SendData(admindata.PROD)
 	}
 
 	reqFormData.Insert()
