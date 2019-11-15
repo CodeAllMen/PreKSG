@@ -33,7 +33,7 @@ func SubService(severConfig sp.ServiceInfo, track *sp.AffTrack) string {
 		"&cpId=%s&requestId=%s&apiKey=%s&signature=%s&timestamp=%s&lang=%s&shortcode=%s" +
 		"&ipAddress=%s&lpUrl=%s&rurl=%s"
 	url = fmt.Sprintf(url, severConfig.ApplicationId, severConfig.CountryId, severConfig.OperatorId, severConfig.CpId, track.TrackID, severConfig.ApiKey, signature,
-		timestamp, "ar", severConfig.ShortCode, track.IP, "http://kg.foxseek.com/op/"+strings.ToLower(severConfig.KeyWord), severConfig.RUrl+strconv.FormatInt(track.TrackID, 10))
+		timestamp, "ar", severConfig.ShortCode, track.IP, "http://kg.foxseek.com/lp/"+strings.ToLower(strings.Replace(severConfig.ServiceID, "-", "/", 1)), severConfig.RUrl+strconv.FormatInt(track.TrackID, 10))
 	fmt.Println("url: ", url)
 
 	client := &http.Client{}

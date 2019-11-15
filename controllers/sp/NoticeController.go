@@ -127,9 +127,9 @@ func (c *NotificationController) Post() {
 		moBase.Track = track.Track
 		// 如果是订阅通知
 		postbackStatus := true
-		if reqFormData.SubType == "SUBSCRIBE" {
-			postbackStatus = false
-		}
+		//if reqFormData.SubType == "SUBSCRIBE" {
+		//	postbackStatus = false
+		//}
 
 		// 存入MO数据
 		moT, notificationType = splib.InsertMO(moBase, false, postbackStatus, serverConfig.ProductName)
@@ -178,7 +178,7 @@ func (c *NotificationController) Post() {
 
 		sendNoti.Sendtime = nowTime
 		sendNoti.NotificationType = notificationType
-		//sendNoti.SendData(admindata.PROD)
+		sendNoti.SendData(admindata.PROD)
 	}
 
 	reqFormData.Insert()

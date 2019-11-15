@@ -21,10 +21,11 @@ func init() {
 	beego.Router("/lp/:serviceType/:operator", &sp.LpController{}, "*:LpSub")
 	beego.Router("/api/sub/:trackID/:op", &sp.SubFlowController{}, "*:SubReq")
 	beego.Router("/api/dn", &sp.NotificationController{})
+
 	beego.Router("/thank/:trackID", &sp.SubFlowController{}, "*:Thanks")
 
 	//postback
 	beego.Router("/set/postback", &sp.SetPostbackController{})
 	//追踪连接
-	beego.Router("/aff_click", &sp.TrackingController{}, "*:InsertAffClick")
+	beego.Router("/aff/click", &sp.TrackingController{}, "*:InsertAffClick")
 }

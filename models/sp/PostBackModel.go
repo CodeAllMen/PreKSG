@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/MobileCPX/PreBaseLib/splib/mo"
+	"github.com/MobileCPX/PreBaseLib/splib/postback"
 	"github.com/MobileCPX/PreBaseLib/util"
 	"github.com/astaxie/beego/httplib"
 	"github.com/astaxie/beego/logs"
@@ -27,6 +28,7 @@ type Postback struct {
 	PromoterID   int     `orm:"column(promoter_id)" json:"promoter_id"`                 //外放人
 	CampID       int     `orm:"column(camp_id)" json:"camp_id"`                         // CampID
 	OfferID      int     `orm:"column(offer_id)" json:"offer_id"`                       // offer_id
+	postback.Postback
 }
 
 func (postback *Postback) TableName() string {
