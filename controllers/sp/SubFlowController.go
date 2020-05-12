@@ -138,6 +138,10 @@ func (c *SubFlowController) ValidateSMS() {
 	c.ServeJSON()
 }
 
+func (c *SubFlowController) Tnc() {
+	c.TplName = "uae/tnc.html"
+}
+
 func (c *SubFlowController) Thanks() {
 	logs.Info("Thanks: ", c.Ctx.Input.URI())
 	track := c.trackClickData

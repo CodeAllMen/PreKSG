@@ -23,6 +23,7 @@ service:
     msg_text: "Thank you for subscribing to Gold Finger service. You can visit the portal on http://ar.goldfingervr.com/. "
     url_post: "http://ar.goldfingervr.com/"
     req_url: "user/add?name={msisdn}&pass={pass}"
+    tnc_url: ""
 
   GF-DU:
     service_id: "GF-DU"
@@ -72,6 +73,7 @@ service:
     url_post: "http://ar.mranimes.com/"
     req_url: "user/add?name={msisdn}&pass={pass}"
     price: "11"
+    tnc_url: ""
   MA-DU:
     service_id: "MA-DU"
     service_name: "My Anime"
@@ -120,6 +122,7 @@ service:
     url_post: "http://ar.mrmoviesite.com/"
     req_url: "user/add?name={msisdn}&pass={pass}"
     price: "11"
+    tnc_url: ""
   POM-DU:
     service_id: "POM-DU"
     service_name: "Poi Movie"
@@ -168,6 +171,7 @@ service:
     req_url: "user/add?name={msisdn}&pass={pass}"
     price: "11"
     msg_text: "Thank you for subscribing to Bodybuild service. You can visit the portal on http://at.fitnessnice.com/. "
+    tnc_url: ""
   BB-DU:
     service_id: "BB-DU"
     service_name: "Bodybuild"
@@ -216,6 +220,7 @@ service:
     req_url: "user/add?name={msisdn}&pass={pass}"
     price: "11"
     msg_text: "Thank you for subscribing to Recipe service. You can visit the portal on http://en.recipenice.com/. "
+    tnc_url: ""
   RC-DU:
     service_id: "RC-DU"
     service_name: "Recipe"
@@ -264,6 +269,7 @@ service:
     req_url: "user/add?name={msisdn}&pass={pass}"
     price: "11"
     msg_text: "Thank you for subscribing to Ebook service. You can visit the portal on http://en.ebooknice.com/. "
+    tnc_url: ""
   EB-DU:
     service_id: "EB-DU"
     service_name: "Ebook"
@@ -312,6 +318,7 @@ service:
     req_url: "user/add?name={msisdn}&pass={pass}"
     price: "11"
     msg_text: "Thank you for subscribing to FNGame service. You can visit the portal on http://fn.3499games.com/. "
+    tnc_url: ""
   FN-DU:
     service_id: "FN-DU"
     service_name: "FNGame"

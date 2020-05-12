@@ -35,6 +35,7 @@ type ServiceInfo struct {
 	Price         string `yaml:"price"`
 	ReqUrl        string `yaml:"req_url"`
 	MsgText       string `yaml:"msg_text"`
+	TncUrl        string `yaml:"tnc_url"`
 }
 
 const (

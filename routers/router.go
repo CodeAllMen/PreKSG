@@ -27,6 +27,8 @@ func init() {
 
 	beego.Router("/thank/:trackID", &sp.SubFlowController{}, "GET:Thanks")
 
+	beego.Router("/tnc/:trackID", &sp.SubFlowController{}, "GET:Tnc")
+
 	// postback
 	beego.Router("/set/postback", &postback.SetPostbackController{})
 	// 追踪连接
