@@ -34,6 +34,7 @@ type ServiceInfo struct {
 	UrlPost       string `yaml:"url_post"`
 	Price         string `yaml:"price"`
 	ReqUrl        string `yaml:"req_url"`
+	MsgText       string `yaml:"msg_text"`
 }
 
 const (
@@ -74,8 +75,8 @@ type CommandParameter struct {
 	SubscriptionId string
 }
 
-//// GetDifferentCommandParameter NTH不同的步骤请求不同的接口  Command
-//func GetDifferentCommandParameter(paramer CommandParameter, service ServiceInfo) (Parameters string) {
+// // GetDifferentCommandParameter NTH不同的步骤请求不同的接口  Command
+// func GetDifferentCommandParameter(paramer CommandParameter, service ServiceInfo) (Parameters string) {
 //	switch paramer.Types {
 //	case WapIdentifyUser:
 //		Parameters = fmt.Sprintf("command=wapIdentifyUser&username=%s&password=%s&serviceCode=%s&userIp=%s"+
@@ -98,4 +99,4 @@ type CommandParameter struct {
 //	}
 //	logs.Info(Parameters)
 //	return
-//}
+// }

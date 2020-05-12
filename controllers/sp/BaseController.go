@@ -1,6 +1,7 @@
 package sp
 
 import (
+	"errors"
 	"github.com/MobileCPX/PreBaseLib/common"
 	"github.com/MobileCPX/PreBaseLib/splib/tracking"
 	"github.com/MobileCPX/PreKSG/models/sp"
@@ -12,10 +13,10 @@ type BaseController struct {
 	common.BaseController
 }
 
-//func (c *BaseController) StringResult(result string) {
+// func (c *BaseController) StringResult(result string) {
 //	c.Ctx.WriteString(result)
 //	c.StopRun()
-//}
+// }
 //
 func (c *BaseController) redirect(url string) {
 	if url == "" {
@@ -34,6 +35,19 @@ func (c *BaseController) getServiceConfig(serviceID string) sp.ServiceInfo {
 	return serviceConfig
 }
 
+func (c *BaseController) getServiceConfigNotification(serviceID string) (serviceConfig sp.ServiceInfo, err error) {
+	var (
+		isExist bool
+	)
+	serviceConfig, isExist = c.serviceCofig(serviceID)
+	if !isExist {
+		logs.Error("服务名称不存在，请检查服务信息，servideID: ", serviceID)
+		// c.redirect("http://www.google.com")
+		err = errors.New("获取serviceId")
+	}
+	return
+}
+
 func (c *BaseController) serviceCofig(serviceID string) (sp.ServiceInfo, bool) {
 	serviceConfig, isExist := sp.ServiceData[serviceID]
 	return serviceConfig, isExist
@@ -46,7 +60,7 @@ func (c *BaseController) getTrackData() *sp.AffTrack {
 	track.TrackID = int64(trackIntID)
 	// 通过TrackID 查询
 	if err := track.GetOne(tracking.ByTrackID); err != nil {
-		c.redirect("http://google.com")
+		c.redirect(c.Ctx.Input.URI() + "/404")
 	}
 	return track
 }
@@ -58,8 +72,8 @@ func (c *BaseController) updateTrack(track *sp.AffTrack) {
 	}
 }
 
-//// CheckError 检查是否有错 msg 定义日志信息
-//func (c *BaseController) CheckError(err error, errorCode enums.ErrorCode, msg ...string) {
+// // CheckError 检查是否有错 msg 定义日志信息
+// func (c *BaseController) CheckError(err error, errorCode enums.ErrorCode, msg ...string) {
 //	if err != nil {
 //		// 打印日志信息
 //		if len(msg) != 0 {
@@ -75,9 +89,9 @@ func (c *BaseController) updateTrack(track *sp.AffTrack) {
 //			c.redirect("https://wwww.google.com")
 //		}
 //	}
-//}
+// }
 //
-//func (c *BaseController) NewInsertMo(notification *sp.Notification, affTrack *sp.AffTrack) (*sp.Mo, string) {
+// func (c *BaseController) NewInsertMo(notification *sp.Notification, affTrack *sp.AffTrack) (*sp.Mo, string) {
 //	mo := new(sp.Mo)
 //	notificationType := ""
 //	isExist := mo.CheckSubIDIsExist(notification.SubscriptionId)
@@ -108,15 +122,15 @@ func (c *BaseController) updateTrack(track *sp.AffTrack) {
 //		notificationType = "SUB"
 //	}
 //	return mo, notificationType
-//}
+// }
 //
-//func (c *BaseController) serviceCofig(serviceID string) (*sp.ServiceInfo, bool) {
+// func (c *BaseController) serviceCofig(serviceID string) (*sp.ServiceInfo, bool) {
 //	serviceCofig, isExist := sp.ServiceData[serviceID]
 //	return &serviceCofig, isExist
-//}
+// }
 //
-//// setCookie
-//func (c *BaseController) setCookie(trackID string) string {
+// // setCookie
+// func (c *BaseController) setCookie(trackID string) string {
 //	// 获取cookie
 //	userId, ok := c.GetSecureCookie("user_cookie", "8A66b76dbd3759445fe924d28a5F6856")
 //	if !ok {
@@ -138,42 +152,42 @@ func (c *BaseController) updateTrack(track *sp.AffTrack) {
 //	// 设置cookie
 //	c.SetSecureCookie("user_cookie", "8A66b76dbd3759445fe924d28a5F6856", userId, 61622400*time.Second)
 //	return userId
-//}
+// }
 //
-//func (c *BaseController) redirect(url string) {
+// func (c *BaseController) redirect(url string) {
 //	if url == "" {
 //		url = "http://google.com"
 //	}
 //	c.Redirect(url, 302)
 //	c.StopRun()
-//}
+// }
 //
-//func (c *BaseController) jsonResult(code enums.JsonResultCode, msg string, obj interface{}) {
+// func (c *BaseController) jsonResult(code enums.JsonResultCode, msg string, obj interface{}) {
 //	r := &models.JsonResult{code, msg, obj}
 //	c.Data["json"] = r
 //	c.ServeJSON()
 //	c.StopRun()
-//}
+// }
 //
-//// 分割requestID to trackID  1819_sub_1550768968
-//func (c *BaseController) splitReuestIDToTrackID(requestID string) (trackID string) {
+// // 分割requestID to trackID  1819_sub_1550768968
+// func (c *BaseController) splitReuestIDToTrackID(requestID string) (trackID string) {
 //	result := strings.Split(requestID, "_")
 //	if len(result) == 3 {
 //		trackID = result[0]
 //	}
 //	return
-//}
+// }
 //
-//func (c *BaseController) getService(serviceID string) *sp.ServiceInfo {
+// func (c *BaseController) getService(serviceID string) *sp.ServiceInfo {
 //	service, isExist := sp.GetServerConfByServiceID(serviceID)
 //	if !isExist {
 //		logs.Info("getService, 通过serviceID 查询服务失败")
 //		c.redirect("https://google.com")
 //	}
 //	return service
-//}
+// }
 //
-//func (c *BaseController) RegisteredService(serviceID, msisdn string) {
+// func (c *BaseController) RegisteredService(serviceID, msisdn string) {
 //	serviceConfig, isExist := c.serviceCofig(serviceID)
 //	if isExist {
 //		registerURL := strings.Replace(serviceConfig.RegisterURL, "msisdn", msisdn, -1)
@@ -184,9 +198,9 @@ func (c *BaseController) updateTrack(track *sp.AffTrack) {
 //			logs.Error("订阅后注册账失败 serviceID :", serviceID, " msisdn: ", msisdn)
 //		}
 //	}
-//}
+// }
 //
-//func (c *BaseController) HandlerParameterToAffTrack(track *sp.AffTrack) *sp.AffTrack {
+// func (c *BaseController) HandlerParameterToAffTrack(track *sp.AffTrack) *sp.AffTrack {
 //	// 服务ID
 //	track.ServiceID = c.GetString("service_id")
 //	//服务名称
@@ -251,16 +265,16 @@ func (c *BaseController) updateTrack(track *sp.AffTrack) {
 //	track.EpNum = c.GetString("ep")
 //
 //	return track
-//}
+// }
 //
-//func (c *BaseController) getOperatorByCampID() {
+// func (c *BaseController) getOperatorByCampID() {
 //
-//}
+// }
 //
-//func (c *BaseController) getIntTrackID(trackStrID string) int {
+// func (c *BaseController) getIntTrackID(trackStrID string) int {
 //	trackIntID, err := strconv.Atoi(trackStrID)
 //	if err != nil {
 //		c.redirect("http://google.com")
 //	}
 //	return trackIntID
-//}
+// }

@@ -17,8 +17,8 @@ type UAELP struct {
 func (this *UAELP) Get() {
 	track := new(models.Track)
 	track.AffName = this.GetString("affName")
-	track.ProId = this.GetString("proId") //产品名
-	track.PubId = this.GetString("pubId") //子渠道
+	track.ProId = this.GetString("proId") // 产品名
+	track.PubId = this.GetString("pubId") // 子渠道
 	track.ClickId = this.GetString("clickId")
 	track.Ip = this.Ctx.Request.Header.Get("X-Real-Ip")
 	track.Agent = this.Ctx.Request.Header.Get("Agent")
@@ -99,6 +99,7 @@ func (this *UAEThank) Get() {
 	message := this.Ctx.Request.Header.Get("statusMessage")
 
 	var service, productName string
+	this.Data["message"] = message
 	switch strings.ToUpper(this.Ctx.Input.Param(":kw")) {
 	case "GF":
 		service = "game"
@@ -112,11 +113,14 @@ func (this *UAEThank) Get() {
 	case "BB":
 		service = "build"
 		productName = "Bodybuild"
+	case "RC":
+		service = "recipe"
+		message = "Thank you for subscribing to Recipe service. You can visit the portal on http://en.recipenice.com/. "
+		productName = "Recipe"
 	default:
 		this.Ctx.WriteString("400")
 		return
 	}
-	this.Data["message"] = message
 	this.Data["service"] = service
 	this.Data["product"] = productName
 	this.TplName = "uae/thank.html"

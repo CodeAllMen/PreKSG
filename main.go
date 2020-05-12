@@ -35,7 +35,7 @@ func main() {
 func task() {
 	cr := cron.New()
 
-	_ = cr.AddFunc("0 20 */1 * * ?", SendClickDataToAdmin) // 一个小时存一次点击数据并且发送到Admin
+	_, _ = cr.AddFunc("0 20 */1 * * ?", SendClickDataToAdmin) // 一个小时存一次点击数据并且发送到Admin
 
 	cr.Start()
 }

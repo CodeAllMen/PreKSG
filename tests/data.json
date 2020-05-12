@@ -1,0 +1,22 @@
+{
+  "requestId": "53a49101-44a9-4684-8fd9-60e92354103c",
+  "transaction": {
+    "transactionId": "62",
+    "data": {
+      "shortcode": "1111",
+      "channelId": "",
+      "applicationId": "12",
+      "countryId": "247",
+      "operatorId": "28",
+      "msisdn": "971567543699",
+      "action": {
+        "type": "SYNC",
+        "subType": "SUBSCRIBE",
+        "status": "DELIVERED",
+        "rate": "11"
+      },
+      "activityTime": "2/12/2020 12:11:44 PM",
+      "subscriptionEnd": "2020-02-19"
+    }
+  }
+}

@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"github.com/MobileCPX/PreBaseLib/util"
+	"github.com/MobileCPX/PreKSG/libs"
 	"github.com/astaxie/beego/httplib"
 	"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego/orm"
@@ -91,26 +92,27 @@ func SendMt(severConfig ServiceInfo, notification *ChargeNotification) {
 
 	var urlPost string
 	timestamp := strconv.Itoa(int(time.Now().Unix()))
-	var signature, operatorId string
+	var signature string
 	pass := RandUpString(8)
 
 	AddUser(urlPost, notification.Msisdn, pass)
-	msgText := "Thank you for subscribing to Gold Finger service. You can visit the portal on" + severConfig.UrlPost + ". Username: " + notification.Msisdn + ".Password: " + pass
-	signature_url := "ApiKey=%s&ApiSecret=%s&ApplicationId=%s&CountryId=%s&OperatorId=%s" +
+	msgText := "Thank you for subscribing to " + severConfig.ProductName + " service. You can visit the portal on" + severConfig.UrlPost + ". Username: " + notification.Msisdn + ".Password: " + pass
+	signature_url := "ApiKey=%s&ApiSecret=%v&ApplicationId=%s&CountryId=%s&OperatorId=%s" +
 		"&CpId=%s&MSISDN=%s&Timestamp=%s&Lang=%s&ShortCode=%s&MsgText=%s&Method=%s"
-	signature_url = fmt.Sprintf(signature_url, severConfig.ApiKey, severConfig.ApiSecret,
+	signature_url = fmt.Sprintf(signature_url, severConfig.ApiKey, libs.EscapeQueryParam(severConfig.ApiSecret),
 		severConfig.ApplicationId, severConfig.CountryId, severConfig.OperatorId, severConfig.CpId,
 		notification.Msisdn, URLEncodeUpper(timestamp), URLEncodeUpper("AR"), severConfig.ShortCode, strings.ToUpper(URLEncodeUpper(msgText)), URLEncodeUpper("SendSMS"))
 	fmt.Println("signature_url:  ", signature_url)
 	signature = HmacSha256([]byte(signature_url), []byte(severConfig.ApiSecret))
 
-	url := "http://ksg.kncee.com/MSG/v1.1/API/SendSMS?applicationId=%s&countryId=%s&operatorId=%s&MSISDN=%s" +
+	urlOrigin := "http://ksg.kncee.com/MSG/v1.1/API/SendSMS?"
+	urlParams := "applicationId=%s&countryId=%s&operatorId=%s&MSISDN=%s" +
 		"&cpId=%s&requestId=%s&apiKey=%s&signature=%s&timestamp=%s&lang=%s&shortcode=%s&msgText=%s"
-	url = fmt.Sprintf(url, severConfig.ApplicationId, severConfig.CountryId, operatorId, notification.Msisdn, severConfig.CpId, notification.RequestId, severConfig.ApiKey, signature,
+	urlOrigin = urlOrigin + fmt.Sprintf(urlParams, severConfig.ApplicationId, severConfig.CountryId, severConfig.OperatorId, notification.Msisdn, severConfig.CpId, notification.RequestId, severConfig.ApiKey, signature,
 		timestamp, "ar", severConfig.ShortCode, URLEncodeUpper(msgText))
-	fmt.Println("url: ", url)
+	fmt.Println("url: ", urlOrigin)
 	client := &http.Client{}
-	res, err := client.Get(url)
+	res, err := client.Get(urlOrigin)
 	fmt.Println(err)
 	body, _ := ioutil.ReadAll(res.Body)
 
@@ -147,11 +149,11 @@ func AddUser(reqURL, msisdn, pass string) {
 	if err != nil {
 		logs.Info("添加用户或者删除用户失败，", reqURL)
 	}
-	//client := &http.Client{}
-	//urlPost := url + "user/add?user=" + name + "&pass=" + pass + "&sign=ksg"
-	//reqjson, _ := http.NewRequest("POST", urlPost, nil)
-	//res, _ := client.Do(reqjson)
-	//defer res.Body.Close()
+	// client := &http.Client{}
+	// urlPost := url + "user/add?user=" + name + "&pass=" + pass + "&sign=ksg"
+	// reqjson, _ := http.NewRequest("POST", urlPost, nil)
+	// res, _ := client.Do(reqjson)
+	// defer res.Body.Close()
 }
 
 func RandUpString(l int) string {

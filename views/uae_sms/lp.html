@@ -1,0 +1,112 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=360">
+    <title>{{.product}}</title>
+    <!-- <link type="text/css" rel="stylesheet" href="/static/css/game.css"> -->
+    <style>
+        body {
+            margin: 0;
+            background-color: bisque
+        }
+
+        .main {
+            min-height: 700px;
+            max-width: 360px;
+            margin: 0 auto 0 auto;
+            overflow-x: hidden;
+            text-align: center;
+            background-color: white;
+        }
+
+        img {
+            width: 80%;
+        }
+
+        .head {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+        }
+
+        .head a {
+            color: red;
+        }
+
+        .title {}
+
+        .title p {
+            margin: 10px 0px 10px 0px;
+        }
+
+        .sub {
+            outline: none;
+            color: white;
+            padding: 8px 16px 8px 16px;
+            font-size: 17px;
+            background-color: #69a012;
+        }
+
+        .exit {
+            outline: none;
+            color: white;
+            font-size: 16px;
+            margin: 10px;
+            padding: 2px 10px 2px 10px;
+            background-color: black;
+        }
+
+        .tnc {
+            text-align: -webkit-auto;
+            margin: 0 45px 10px 45px;
+        }
+
+        .btn-left {
+            outline: none;
+            border-right-style: groove;
+            border-radius: 10px 0px 0px 10px;
+            background-color: antiquewhite;
+        }
+
+        .btn-right {
+            outline: none;
+            border-radius: 0px 10px 10px 0px;
+            margin-left: -4px;
+            background-color: antiquewhite;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="head">
+            <div>
+                <button class="btn-left">En</button>
+                <button class="btn-right">Ar</button>
+            </div>
+            <div>
+                <!-- <a href="#">Exit</a> -->
+            </div>
+        </div>
+        <div class="title">
+        </div>
+        <img src="/static/img/game.png">
+        <p>Gold finger</p>
+        <p style="margin:10px;">To subscribe in video store service, please click on the below button send you the PIN
+            Code</p>
+        <button class="sub">Subscibe through PIN Code</button><br>
+        <button class="exit">Exit</button>
+        <p>Free for 24 hours than AED 11 per week</p>
+        <p class="tnc">By clicking on Subcribe, you agree to the below terms and conditions:<br>
+            - You will start the paid subscription automatically every week.<br>
+            - No commitment you can cancel anytime by sending UNSUB {{.key}} to {{.code}} <br>
+            - The free trial is valid only for new subscribers
+            - To get support, please contact: vas@kncee.com
+        </p>
+    </div>
+</body>
+<!-- <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script> -->
+
+</html>

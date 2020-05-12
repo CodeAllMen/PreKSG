@@ -1,13 +1,13 @@
 <html>
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=360">
     <title>{{.pro}}</title>
     <style>
         body {
             margin: 0;
-            background-color: bisque
+            background-color: bisque;
         }
 
         .main {
@@ -35,7 +35,8 @@
             color: red;
         }
 
-        .title {}
+        .title {
+        }
 
         .title p {
             margin: 10px 0px 10px 0px;
@@ -62,6 +63,7 @@
             text-align: -webkit-auto;
             margin: 0 45px 10px 45px;
         }
+
         .tncar {
             text-align: right;
             margin: 0 45px 10px 45px;
@@ -99,88 +101,124 @@
             width: 50%;
             margin: 0 0 5px 0;
         }
-        .noexit{
+
+        .noexit {
             display: none;
         }
-        #ar-div.tnc{
+
+        #ar-div.tnc {
             text-align: right;
+        }
+
+        .mb_number {
+            width: 180px;
+            height: auto;
+            margin: 0 auto;
+        }
+
+        .mb_number_input {
+            width: 100%;
+            height: 40px;
+            font-size: 14px;
+            padding-left: 8px;
+            padding-right: 8px;
+            border-radius: 5px;
+            border: 1px solid #333333;
+            outline: none;
         }
     </style>
 </head>
 
 <body>
-    <p id="ptxid" style="display:none">{{.ptxid}}</p>
-    <div class="main">
-        <div class="head">
-            <div>
-                <button class="btn-left" id="en-btn">En</button>
-                <button class="btn-right" id="ar-btn">Ar</button>
-            </div>
-            <div class="">
-                <!-- <a href="#">Exit</a> -->
-            </div>
+<p id="ptxid" style="display:none">{{.ptxid}}</p>
+<div class="main">
+    <div class="head">
+        <div>
+            <button class="btn-left" id="en-btn">En</button>
+            <button class="btn-right" id="ar-btn">Ar</button>
         </div>
-        <div id="en-div">
-            <div class="title">
-                <p>Free for 24 hours then AED 11 per week</p>
-            </div>
-            <img src="/static/img/{{.service}}.png">
-            <p>{{.pro}}</p>
-            <p style="margin:10px;">Please select you operator and click confirm.</p>
-            <div class="item">
-                <select id="operator">
-                    <option value="1">Etisalat</option>
-                    <option value="2">Du</option>
-                </select>
-            </div>
-            <p id="message" style="color:red;"></p>
-            <button class="sub" id="comfirm">Confirm</button><br>
-            <p>Free for 24 hours than AED 11 per week</p>
-            <p class="tnc">By clicking on Subcribe, you agree to the below terms and conditions:<br>
-                - You will start the paid subscription automatically every week.<br>
-                - No commitment you can cancel anytime by sending C {{.key}} to {{.code}} <br>
-                - The free trial is valid only for new subscribers<br>
-                - To get support, please contact: vas@kncee.com
-            </p>
-        </div>
-        <div id="ar-div" class="noexit">
-            <div class="title">
-                <p>مجانًا لمدة 24 ساعة ثم 10 دراهم أسبوعيًا</p>
-            </div>
-            <img src="/static/img/{{.service}}.png">
-            <p>{{.pro}}</p>
-            <p style="margin:10px;">يرجى تحديد شبكة الاتصالات والنقر على تأكيد</p>
-            <div class="item">
-                <select id="operator">
-                    <option value="1">Etisalat</option>
-                    <option value="2">Du</option>
-                </select>
-            </div>
-            <p id="message" style="color:red;"></p>
-            <button class="sub" id="comfirm">تأكيد</button><br>
-            <p>مجانًا لمدة 24 ساعة ثم 10 دراهم أسبوعيًا</p>
-            <p class="tncar">من خلال النقر على "اشترك" ، فإنك توافق على البنود والشروط التالية:<br>
-                تتجدد الخدمة تلقائيا كل أسبوع<br>
-                لا يوجد التزام يمكنك إلغاؤه في أي وقت عن طريق إرسال C {{.key}} إلى {{.code}}<br>
-                للحصول على الدعم ، يرجى الاتصال vas@kncee.com<br>
-                النسخة التجريبية المجانية صالحة فقط للمشتركين الجدد
-            </p>
+        <div class="">
+            <!-- <a href="#">Exit</a> -->
         </div>
     </div>
+    <div id="en-div">
+        <div class="title">
+            <p>Free for 1 day then AED Price/Duration, VAT Included</p>
+        </div>
+        <img src="/static/img/{{.service}}.png">
+        <p>{{.pro}}</p>
+        <p style="margin:10px;">Enter your mobile number to receive OTP</p>
+        <div class="item">
+{{/*            <select id="operator">*/}}
+{{/*                <option value="1">Etisalat</option>*/}}
+{{/*                <option value="2">Du</option>*/}}
+{{/*            </select>*/}}
+            <div class="mb_number">
+                <input id="mb_number_1" class="mb_number_input" placeholder=""/>
+            </div>
+        </div>
+        <p id="message" style="color:red;"></p>
+        <button class="sub" id="comfirm">Confirm</button>
+        <br>
+        <p>Free for 1 day then AED Price/Duration, VAT Included</p>
+        <p class="tnc">By clicking on Subcribe, you agree to the below terms and conditions:<br>
+            - You will start the paid subscription automatically every week.<br>
+            - No commitment you can cancel anytime by sending C {{.key}} to {{.code}} <br>
+            - The free trial is valid only for new subscribers<br>
+            - To get support, please contact: vas@kncee.com
+        </p>
+    </div>
+    <div id="ar-div" class="noexit">
+        <div class="title">
+            <p>مجانًا لمدة 24 ساعة ثم 11 دراهم أسبوعيًا</p>
+        </div>
+        <img src="/static/img/{{.service}}.png">
+        <p>{{.pro}}</p>
+        <p style="margin:10px;">يرجى تحديد شبكة الاتصالات والنقر على تأكيد</p>
+        <div class="item">
+            <select id="operator">
+                <option value="1">Etisalat</option>
+                <option value="2">Du</option>
+            </select>
+            <div class="mb_number">
+                <input id="mb_number_2" class="mb_number_input" placeholder="رقم هاتفك"/>
+            </div>
+        </div>
+        <p id="message" style="color:red;"></p>
+        <button class="sub" id="comfirm">تأكيد</button>
+        <br>
+        <p>مجانًا لمدة 24 ساعة ثم 11 دراهم أسبوعيًا</p>
+        <p class="tncar">من خلال النقر على "اشترك" ، فإنك توافق على البنود والشروط التالية:<br>
+            تتجدد الخدمة تلقائيا كل أسبوع<br>
+            لا يوجد التزام يمكنك إلغاؤه في أي وقت عن طريق إرسال C {{.key}} إلى {{.code}}<br>
+            للحصول على الدعم ، يرجى الاتصال vas@kncee.com<br>
+            النسخة التجريبية المجانية صالحة فقط للمشتركين الجدد
+        </p>
+    </div>
+</div>
 </body>
 <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
 <script>
-    $("#en-btn").click(function(){
+    $("#en-btn").click(function () {
         $("#en-div").removeClass("noexit")
         $("#ar-div").addClass("noexit")
     })
-    $("#ar-btn").click(function(){
+    $("#ar-btn").click(function () {
         $("#ar-div").removeClass("noexit")
         $("#en-div").addClass("noexit")
     })
     $("#comfirm").click(function () {
+        let number = $("#mb_number_1").val();
+        if (!number) {
+            number = $("#mb_number_2").val();
+        }
 
-        window.location.href = {{.URL}};
+        if (!number) {
+            alert("Please input mobile number");
+            return
+        }
+
+        window.location.href = "{{.URL}}" + "\/" + number;
         // data = {
         //     "ptxid": $("#ptxid").text(),
         //     "op": $("#operator").val(),
@@ -199,7 +237,7 @@
         //     error: function (error) {
         //     }
         // })
-    }) 
+    })
 </script>
 
 </html>

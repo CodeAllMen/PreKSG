@@ -124,9 +124,9 @@ func SendSubMt(dn DnStruct) {
 		cpId = "9"
 		apiKey = "kLJ6ToymFc5yGHP6N6jYM0fq9qJdAIat"
 		apiSecret = "diy3QXB6J5Ekp7BBXxvnv0ZEhuGLMAdgTJoy1zq7FOBvXviLG8RM8/IZZf8f0r4E"
-		msgText = "Thank you for subscribing to Gold Finger service. You can visit the portal on http://ar.fit8tube.com/. Username: " + dn.Msisdn + ".Password: " + pass
+		msgText = "Thank you for subscribing to Gold Finger service. You can visit the portal on http://at.fitnessnice.com/. Username: " + dn.Msisdn + ".Password: " + pass
 		applicationId = "15"
-		urlPost = "http://ar.fit8tube.com/"
+		urlPost = "http://at.fitnessnice.com/"
 	}
 
 	AddUser(urlPost, dn.Msisdn, pass)

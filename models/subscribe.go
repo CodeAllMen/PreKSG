@@ -102,7 +102,7 @@ func Subscribe(ptxid, operator string) string {
 			operatorId = "28"
 			apiKey = "kLJ6ToymFc5yGHP6N6jYM0fq9qJdAIat"
 			apiSecret = "diy3QXB6J5Ekp7BBXxvnv0ZEhuGLMAdgTJoy1zq7FOBvXviLG8RM8/IZZf8f0r4E"
-			rurl = "http://ar.fit8tube.com/"
+			rurl = "http://at.fitnessnice.com/"
 		case "2":
 			shortCode = "3246"
 			operatorId = "32"

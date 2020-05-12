@@ -117,6 +117,6 @@ type DnStruct struct {
 	Rate            string `orm:"size(100)"`
 }
 
-//func init() {
+//func init()
 //	orm.RegisterModel(new(Track), new(Old_Postback), new(PostbackRecord), new(MoStruct), new(DnStruct), new(MtStruct), new(sp.Postback), new(sp.AffTrack))
 //}

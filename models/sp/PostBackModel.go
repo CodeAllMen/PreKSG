@@ -14,9 +14,9 @@ import (
 	"time"
 )
 
-//Postback 网盟信息
+// Postback 网盟信息
 type Postback struct {
-	ID           int     `orm:"pk;auto;column(id)" json:"-"`                            //自增ID
+	ID           int     `orm:"pk;auto;column(id)" json:"-"`                            // 自增ID
 	CreateTime   string  `orm:"column(create_time)" json:"-"`                           // 添加时间
 	UpdateTime   string  `orm:"column(update_time)" json:"-"`                           // 更新时间
 	DayCap       int     `orm:"column(day_cap)" json:"day_cap"`                         // 更新时间
@@ -24,8 +24,8 @@ type Postback struct {
 	PostbackURL  string  `orm:"column(postback_url);size(300)" json:"postback_url"`     // postback URL
 	PostbackRate int     `orm:"column(postback_rate);default(50)" json:"postback_rate"` // 回传概率
 	Payout       float32 `orm:"column(Payout)" json:"payout"`                           // 转化单价
-	PromoterName string  `orm:"column(promoter_name)" json:"promoter_name"`             //外放人
-	PromoterID   int     `orm:"column(promoter_id)" json:"promoter_id"`                 //外放人
+	PromoterName string  `orm:"column(promoter_name)" json:"promoter_name"`             // 外放人
+	PromoterID   int     `orm:"column(promoter_id)" json:"promoter_id"`                 // 外放人
 	CampID       int     `orm:"column(camp_id)" json:"camp_id"`                         // CampID
 	OfferID      int     `orm:"column(offer_id)" json:"offer_id"`                       // offer_id
 	postback.Postback
@@ -35,7 +35,7 @@ func (postback *Postback) TableName() string {
 	return "postback"
 }
 
-//Insert  插入Postback
+// Insert  插入Postback
 func (postBack *Postback) Insert() error {
 	o := orm.NewOrm()
 	postBack.CreateTime, _ = util.GetNowTime()
@@ -46,7 +46,7 @@ func (postBack *Postback) Insert() error {
 	return err
 }
 
-//Update  更新Postback
+// Update  更新Postback
 func (postBack *Postback) Update() error {
 	o := orm.NewOrm()
 	postBack.UpdateTime, _ = util.GetNowTime()

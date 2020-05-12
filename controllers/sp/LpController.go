@@ -20,7 +20,7 @@ func (c *LpController) LpSub() {
 		trackID = c.GetString("tid")
 	} else {
 		// LP 页面存入此次点击信息，获取aff_track 表自增ID
-		trackID = tracking.LpPageTracking(c.Ctx.Request, "http://kg.foxseek.com/aff/click", serviceConfig.ServiceID)
+		trackID = tracking.LpPageTracking(c.Ctx.Request, "http://kg.argameloft.com/aff/click", serviceConfig.ServiceID)
 		// 将trackID转为int类型，判断trackID是否为数字类型
 		_, err := strconv.Atoi(trackID)
 
@@ -30,16 +30,34 @@ func (c *LpController) LpSub() {
 		}
 	}
 
-	c.Data["URL"] = "/api/sub/" + trackID + "/" + operator
 	c.Data["pro"] = serviceConfig.ProductName
 	c.Data["code"] = serviceConfig.ShortCode
-	c.Data["key"] = serviceConfig.KeyWord
+
+	if serviceConfig.KeyWord == "MA" {
+		if serviceConfig.ShortCode == "1111" {
+			c.Data["key"] = "MYA"
+		} else {
+			c.Data["key"] = serviceConfig.KeyWord
+		}
+	} else {
+		c.Data["key"] = serviceConfig.KeyWord
+	}
+
 	c.Data["service"] = serviceConfig.Service
-	//c.Data["ptxid"] = id_str
+	// c.Data["ptxid"] = id_str
 	c.Data["description"] = serviceConfig.Description
 	c.Data["descriptionAr"] = serviceConfig.DescriptionAr
 	c.Data["content"] = serviceConfig.Content
 	c.Data["contentAr"] = serviceConfig.DescriptionAr
 
-	c.TplName = "uae/" + operator + ".html"
+	// ET的
+	if serviceConfig.ShortCode == "1111" {
+		c.Data["URL"] = "/api/sub_sms/" + trackID + "/" + operator
+		c.TplName = "uae/" + operator + ".html"
+	} else {
+		// DU的
+		c.Data["URL"] = "/api/sub/" + trackID + "/" + operator
+		c.TplName = "uae_sms/" + operator + ".html"
+	}
+
 }
