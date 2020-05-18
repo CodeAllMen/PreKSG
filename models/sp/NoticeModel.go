@@ -88,6 +88,16 @@ func (charge *ChargeNotification) Insert() {
 	}
 }
 
+func (charge *ChargeNotification) GetChargeList(startTime, endTime string) (list []*ChargeNotification, err error) {
+	db := orm.NewOrm()
+
+	if _, err = db.Raw("select * from charge_notification where send_time >= ? and send_time <= ?", startTime, endTime).QueryRows(&list); err != nil {
+		err = libs.NewReportError(err)
+	}
+
+	return
+}
+
 func SendMt(severConfig ServiceInfo, notification *ChargeNotification) {
 
 	var urlPost string
