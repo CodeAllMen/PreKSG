@@ -33,4 +33,6 @@ func init() {
 	beego.Router("/set/postback", &postback.SetPostbackController{})
 	// 追踪连接
 	beego.Router("/aff/click", &sp.TrackingController{}, "*:InsertAffClick")
+
+	beego.Router("/count", &sp.CountController{}, "Get:Count")
 }

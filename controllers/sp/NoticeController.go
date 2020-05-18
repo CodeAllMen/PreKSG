@@ -45,6 +45,9 @@ func (c *NotificationController) Post() {
 	var dnJson sp.DnJson
 
 	err := json.Unmarshal(body, &dnJson)
+
+	fmt.Println("KC UAE Data: ", string(body))
+
 	if err != nil {
 		logs.Error("notification ERROR,接收通知错误", err.Error())
 		c.Ctx.WriteString("ERROR")
