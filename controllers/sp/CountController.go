@@ -21,9 +21,8 @@ func (c *CountController) Count() {
 	var (
 		err        error
 		list       []*sp.ChargeNotification
-		total      = 0
-		fee        int
-		successNum = 0
+		total      = 0.0
+		fee        float64
 	)
 
 	startTime := c.GetString("start_time")
@@ -36,25 +35,19 @@ func (c *CountController) Count() {
 		fmt.Println(err)
 	}
 
-	fmt.Println(list)
-
 	// 遍历 数据，并且进行累加
 	for _, data := range list {
-		fmt.Println(data)
 		// 扣费成功的才进行计算
-		if data.SubType == "RENEWAL" && data.Status == "DELIVERED" {
-			if fee, err = strconv.Atoi(data.Rate); err != nil {
-				err = libs.NewReportError(err)
-				fmt.Println(err)
-			} else {
-				successNum++
-				total = total + fee
-			}
+		if fee, err = strconv.ParseFloat(data.Rate, 64); err != nil {
+			err = libs.NewReportError(err)
+			fmt.Println(err)
+		} else {
+			total = total + fee
 		}
 	}
 
 	result := "%v  到  %v 的总扣费为：%v, 扣费成功数为：%v"
-	result = fmt.Sprintf(result, startTime, endTime, total, successNum)
+	result = fmt.Sprintf(result, startTime, endTime, total, len(list))
 
 	c.Data["json"] = result
 	c.ServeJSON()
