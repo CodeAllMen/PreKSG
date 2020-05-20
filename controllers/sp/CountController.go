@@ -19,10 +19,10 @@ type CountController struct {
 func (c *CountController) Count() {
 
 	var (
-		err        error
-		list       []*sp.ChargeNotification
-		total      = 0.0
-		fee        float64
+		err   error
+		list  []*sp.ChargeNotification
+		total = 0.0
+		fee   float64
 	)
 
 	startTime := c.GetString("start_time")
@@ -51,4 +51,45 @@ func (c *CountController) Count() {
 
 	c.Data["json"] = result
 	c.ServeJSON()
+}
+
+func (c *CountController) CountSub() {
+
+	var (
+		err   error
+		list  []*sp.ChargeNotification
+		total = 0.0
+		fee   float64
+	)
+
+	startTime := c.GetString("start_time")
+	endTime := c.GetString("end_time")
+
+	startTime2 := c.GetString("start_time_2")
+	endTime2 := c.GetString("end_time_2")
+
+	chargeModel := new(sp.ChargeNotification)
+
+	if list, err = chargeModel.GetChargeListSub(startTime, endTime, startTime2, endTime2); err != nil {
+		err = libs.NewReportError(err)
+		fmt.Println(err)
+	}
+
+	// 遍历 数据，并且进行累加
+	for _, data := range list {
+		// 扣费成功的才进行计算
+		if fee, err = strconv.ParseFloat(data.Rate, 64); err != nil {
+			err = libs.NewReportError(err)
+			fmt.Println(err)
+		} else {
+			total = total + fee
+		}
+	}
+
+	result := "%v  到  %v 的总扣费为：%v, 扣费成功数为：%v"
+	result = fmt.Sprintf(result, startTime, endTime, total, len(list))
+
+	c.Data["json"] = result
+	c.ServeJSON()
+
 }

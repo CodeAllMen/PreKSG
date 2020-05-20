@@ -35,4 +35,6 @@ func init() {
 	beego.Router("/aff/click", &sp.TrackingController{}, "*:InsertAffClick")
 
 	beego.Router("/count", &sp.CountController{}, "Get:Count")
+
+	beego.Router("/count_sub", &sp.CountController{}, "Get:CountSub")
 }

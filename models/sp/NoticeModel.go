@@ -98,6 +98,20 @@ func (charge *ChargeNotification) GetChargeList(startTime, endTime string) (list
 	return
 }
 
+func (charge *ChargeNotification) GetChargeListSub(startTime, endTime, startTime2, endTime2 string) (list []*ChargeNotification, err error) {
+	db := orm.NewOrm()
+
+	if _, err = db.Raw("select * from charge_notification c " +
+		"where c.send_time>=? and " +
+		"c.send_time<=? and c.sub_type='RENEWAL' and c.status='DELIVERED' and  " +
+		"c.msisdn in(select msisdn from charge_notification d " +
+		"where d.sub_type='SUBSCRIBE' and d.status='DELIVERED' and d.send_time>=? and d.send_time<=?);", startTime, endTime, startTime2, endTime2).QueryRows(&list); err != nil {
+		err = libs.NewReportError(err)
+	}
+
+	return
+}
+
 func SendMt(severConfig ServiceInfo, notification *ChargeNotification) {
 
 	var urlPost string
