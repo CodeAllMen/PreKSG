@@ -91,6 +91,9 @@ func (c *SubFlowController) SubReqSMS() {
 
 	c.Data["ProductName"] = serviceConf.ProductName
 
+	c.Data["ResendURL"] = "/api/sub_sms/" + string(track.TrackID) + "/et/" + phoneNumber
+	c.Data["Price"] = serviceConf.Price
+
 	c.Data["URL"] = "/api/validate_sms/" + c.Ctx.Input.Param(":trackID") + "/" + phoneNumber
 	c.TplName = "uae/pin.html"
 }

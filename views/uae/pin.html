@@ -45,9 +45,32 @@
         .sub {
             outline: none;
             color: white;
+            width: 180px;
             padding: 8px 16px 8px 16px;
             font-size: 17px;
-            background-color: #69a012;
+            background-color: red;
+            border-radius: 5px;
+        }
+
+        .resend_btn {
+            outline: none;
+            color: white;
+            width: 180px;
+            padding: 8px 16px 8px 16px;
+            font-size: 17px;
+            background-color: #990099;
+            border-radius: 5px;
+        }
+
+        .exit_btn_1 {
+            margin-top: 8px;
+            outline: none;
+            color: white;
+            border-radius: 5px;
+            width: 180px;
+            padding: 8px 16px 8px 16px;
+            font-size: 17px;
+            background-color: #FFCC00;
         }
 
         .exit {
@@ -102,20 +125,24 @@
     </div>
     <div style="width: 100%; height: 50px;"></div>
     <div class="title">
-        <p>Free for 24 hours then AED 11 per week</p>
+        <p>Free for 1 day then AED {{.Price}}/Week, VAT Included</p>
     </div>
     {{/*    <img src="/static/img/game.jpg">*/}}
     <p>{{.ProductName}}</p>
     {{/*    <p>Welcome: 05XXXXXXXX</p>*/}}
-    <p style="margin:10px;">Please Enter the PIN Code you received to activate your subscription</p>
+{{/*    <p style="margin:10px;">Please Enter the PIN Code you received to activate your subscription</p>*/}}
+    <p style="margin:10px;">Please enter your verification pin code.</p>
     <input id="pin_content"/>
-    <button class="sub">Comfirm your subscription</button>
+    <br/>
+    <button class="sub">Confirm</button>
+    <br/>
+    <button class="resend_btn">Resend Pin</button>
     <br>
-    <button class="exit">Exit</button>
-    <p>Free for 24 hours than AED 11 per week</p>
+    <button class="exit_btn_1">Exit</button>
+    <p>Free for 1 day then AED {{.Price}}/Week, VAT Included</p>
     <p class="tnc">By clicking on Subcribe, you agree to the below terms and conditions:<br>
         - You will start the paid subscription automatically every week.<br>
-{{/*        - No commitment you can cancel anytime by sending C {{.key}} to {{.code}} <br>*/}}
+        {{/*        - No commitment you can cancel anytime by sending C {{.key}} to {{.code}} <br>*/}}
         - The free trial is valid only for new subscribers
         - To get support, please contact: vas@kncee.com
         <br/>
@@ -134,7 +161,11 @@
                 // let pin = document.getElementById("pin_content").value;
                 {{/*window.location.href = "{{.URL}}" + "\/" + pin;*/}}
                 self.validatePin();
-            })
+            });
+
+            this.body.delegate(".resend_btn", "click", function () {
+                self.resendPin();
+            });
         };
         du_func.prototype = {
             test: function () {
@@ -157,7 +188,7 @@
                     success: function (res) {
                         if (res.code === 0) {
                             window.location.href = res.url;
-                        }else {
+                        } else {
                             alert("invalid pin, please check it.");
                         }
                     },
@@ -165,6 +196,9 @@
                         console.log(err)
                     }
                 })
+            },
+            resendPin: function () {
+                window.location.href = "{{.ResendURL}}"
             }
         }
         window['du_func'] = du_func;

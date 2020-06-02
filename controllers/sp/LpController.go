@@ -49,6 +49,8 @@ func (c *LpController) LpSub() {
 	c.Data["descriptionAr"] = serviceConfig.DescriptionAr
 	c.Data["content"] = serviceConfig.Content
 	c.Data["contentAr"] = serviceConfig.DescriptionAr
+	c.Data["UrlPost"] = serviceConfig.UrlPost
+	c.Data["Price"] = serviceConfig.Price
 
 	// ET的
 	if serviceConfig.ShortCode == "1111" {

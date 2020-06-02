@@ -45,9 +45,22 @@
         .sub {
             outline: none;
             color: white;
+            width: 180px;
             padding: 8px 16px 8px 16px;
             font-size: 17px;
-            background-color: #69a012;
+            background-color: red;
+            border-radius: 5px;
+        }
+
+        .exit_btn_1 {
+            margin-top: 8px;
+            outline: none;
+            color: white;
+            border-radius: 5px;
+            width: 180px;
+            padding: 8px 16px 8px 16px;
+            font-size: 17px;
+            background-color: #FFCC00;
         }
 
         .exit {
@@ -143,11 +156,11 @@
     </div>
     <div id="en-div">
         <div class="title">
-            <p>Free for 1 day then AED Price/Duration, VAT Included</p>
+            <p>Free for 1 day then AED {{.Price}}/Week, VAT Included</p>
         </div>
         <img src="/static/img/{{.service}}.png">
         <p>{{.pro}}</p>
-        <p style="margin:10px;">Enter your mobile number to receive OTP</p>
+        <p style="margin:10px;">Please enter your mobile number to subscribe</p>
         <div class="item">
             {{/* <select id="operator">*/}}
             {{/*
@@ -158,13 +171,15 @@
             */}}
             {{/* </select>*/}}
             <div class="mb_number">
-                <input id="mb_number_1" class="mb_number_input" placeholder=""/>
+                <input id="mb_number_1" class="mb_number_input" placeholder="+971"/>
             </div>
         </div>
         <p id="message" style="color:red;"></p>
-        <button class="sub" id="comfirm">Confirm</button>
+        <button class="sub" id="comfirm">Subscribe</button>
+        <br/>
+        <button class="exit_btn_1" id="exit_btn_1" onclick="location.href='{{.UrlPost}}'">Exit</button>
         <br>
-        <p>Free for 1 day then AED Price/Duration, VAT Included</p>
+        <p>Free for 1 day then AED {{.Price}}/Week, VAT Included</p>
         <p class="tnc">By clicking on Subcribe, you agree to the below terms and conditions:<br>
             - You will start the paid subscription automatically every week.<br>
             - No commitment you can cancel anytime by sending C {{.key}} to {{.code}} <br>
@@ -175,24 +190,26 @@
     </div>
     <div id="ar-div" class="noexit">
         <div class="title">
-            <p>مجانًا لمدة 24 ساعة ثم 11 دراهم أسبوعيًا</p>
+            <p>مجانًا لمدة يوم واحد ثم {{.Price}} درهمًا إماراتيًا / الأسبوع ، شاملة ضريبة القيمة المضافة</p>
         </div>
         <img src="/static/img/{{.service}}.png">
         <p>{{.pro}}</p>
-        <p style="margin:10px;">يرجى تحديد شبكة الاتصالات والنقر على تأكيد</p>
+        <p style="margin:10px;">يرجى إدخال رقم هاتفك المحمول للاشتراك</p>
         <div class="item">
-            <select id="operator">
-                <option value="1">Etisalat</option>
-                <option value="2">Du</option>
-            </select>
+            {{/*            <select id="operator">*/}}
+            {{/*                <option value="1">Etisalat</option>*/}}
+            {{/*                <option value="2">Du</option>*/}}
+            {{/*            </select>*/}}
             <div class="mb_number">
-                <input id="mb_number_2" class="mb_number_input" placeholder="رقم هاتفك"/>
+                <input id="mb_number_2" class="mb_number_input" placeholder="+971"/>
             </div>
         </div>
         <p id="message" style="color:red;"></p>
         <button class="sub" id="comfirm">تأكيد</button>
+        <br/>
+        <button class="exit_btn_1" id="exit_btn_1" onclick="location.href='{{.UrlPost}}'">خروج</button>
         <br>
-        <p>مجانًا لمدة يوم واحد ثم السعر / المدة بالدرهم الإماراتي ،شامل ضريبة القيمة المضافة</p>
+        <p>مجانًا لمدة يوم واحد ثم {{.Price}} درهمًا إماراتيًا / الأسبوع ، شاملة ضريبة القيمة المضافة</p>
         <p class="tncar">من خلال النقر على "اشترك" ، فإنك توافق على البنود والشروط التالية:<br>
             تتجدد الخدمة تلقائيا كل أسبوع<br>
             لا يوجد التزام يمكنك إلغاؤه في أي وقت عن طريق إرسال C {{.key}} إلى {{.code}}<br>

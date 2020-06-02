@@ -215,7 +215,12 @@ func (c *NotificationController) Post() {
 
 		sendNoti.Sendtime = nowTime
 		sendNoti.NotificationType = notificationType
-		sendNoti.SendData(admindata.PROD)
+		fmt.Println("service id ====== ", sendNoti.ServiceID)
+		if sendNoti.ServiceID == "BB-NEW-ET" {
+			sendNoti.SendData(admindata.SEC)
+		} else {
+			sendNoti.SendData(admindata.PROD)
+		}
 		fmt.Println("发送订阅通知给后台 完成")
 	}
 
