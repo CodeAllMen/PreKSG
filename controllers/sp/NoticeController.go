@@ -216,7 +216,11 @@ func (c *NotificationController) Post() {
 		sendNoti.Sendtime = nowTime
 		sendNoti.NotificationType = notificationType
 		fmt.Println("service id ====== ", sendNoti.ServiceID)
-		if sendNoti.ServiceID == "BB-NEW-ET" || sendNoti.ServiceID == "GF-NEW-ET" {
+		if sendNoti.ServiceID == "BB-NEW-ET" ||
+			sendNoti.ServiceID == "GF-NEW-ET" ||
+			sendNoti.ServiceID == "EB-NEW-ET" ||
+			sendNoti.ServiceID == "MA-NEW-ET" ||
+			sendNoti.ServiceID == "POM-NEW-ET" {
 			sendNoti.SendData(admindata.SEC)
 		} else {
 			sendNoti.SendData(admindata.PROD)
