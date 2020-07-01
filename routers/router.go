@@ -37,4 +37,6 @@ func init() {
 	beego.Router("/count", &sp.CountController{}, "Get:Count")
 
 	beego.Router("/count_sub", &sp.CountController{}, "Get:CountSub")
+
+	beego.Router("/divide_system", &sp.CountController{}, "Get:DivideSystem")
 }

@@ -105,7 +105,19 @@ func (c *NotificationController) Post() {
 			reqFormData.Insert()
 			c.Ctx.WriteString("ok")
 			c.StopRun()
+			return
 		}
+
+		if serverConfig.ServiceID == "BB-NEW-ET" ||
+			serverConfig.ServiceID == "GF-NEW-ET" ||
+			serverConfig.ServiceID == "EB-NEW-ET" ||
+			serverConfig.ServiceID == "MA-NEW-ET" ||
+			serverConfig.ServiceID == "POM-NEW-ET" {
+			reqFormData.SystemMark = 2
+		} else {
+			reqFormData.SystemMark = 1
+		}
+
 		// sp.SendMt(serverConfig, reqFormData)
 	}
 

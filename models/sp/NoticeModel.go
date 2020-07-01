@@ -76,6 +76,7 @@ type ChargeNotification struct {
 	SubType         string `orm:"size(100)"`
 	Status          string `orm:"size(100)"`
 	Rate            string `orm:"size(100)"`
+	SystemMark      int    `json:"system_mark"` // 1 为(http://offer.foxseeksp.com/offer/index), 2为(http://sp.foxseek.com/offer/index)
 	SendTime        string
 }
 
@@ -98,16 +99,35 @@ func (charge *ChargeNotification) GetChargeList(startTime, endTime string) (list
 	return
 }
 
-func (charge *ChargeNotification) GetChargeListSub(startTime, endTime, startTime2, endTime2 string) (list []*ChargeNotification, err error) {
+func (charge *ChargeNotification) GetList() (list []*ChargeNotification, err error) {
 	db := orm.NewOrm()
 
-	if _, err = db.Raw("select * from charge_notification c " +
-		"where c.send_time>=? and " +
-		"c.send_time<=? and c.sub_type='RENEWAL' and c.status='DELIVERED' and  " +
-		"c.msisdn in(select msisdn from charge_notification d " +
-		"where d.sub_type='SUBSCRIBE' and d.status='DELIVERED' and d.send_time>=? and d.send_time<=?);", startTime, endTime, startTime2, endTime2).QueryRows(&list); err != nil {
+	if _, err = db.Raw("select * from charge_notification where sub_type='RENEWAL' and status='DELIVERED' and system_mark=0").QueryRows(&list); err != nil {
 		err = libs.NewReportError(err)
 	}
+
+	return
+}
+
+func (charge *ChargeNotification) GetChargeListSub(startTime, endTime, startTime2, endTime2, systemMark string) (list []*ChargeNotification, err error) {
+	db := orm.NewOrm()
+
+	if _, err = db.Raw("select * from charge_notification c "+
+		"where c.send_time>=? and "+
+		"c.send_time<=? and c.sub_type='RENEWAL' and c.status='DELIVERED' and c.system_mark=? and  "+
+		"c.msisdn in(select msisdn from charge_notification d "+
+		"where d.sub_type='SUBSCRIBE' and d.status='DELIVERED' and d.send_time>=? and d.send_time<=?);", startTime, endTime, systemMark, startTime2, endTime2).QueryRows(&list); err != nil {
+		err = libs.NewReportError(err)
+	}
+
+	return
+}
+
+func (charge *ChargeNotification) UpdateSystemMark() (err error) {
+
+	o := orm.NewOrm()
+
+	_, err = o.Update(charge)
 
 	return
 }

@@ -6,6 +6,7 @@ package sp
 
 import (
 	"fmt"
+	"github.com/MobileCPX/PreBaseLib/splib/tracking"
 	"github.com/MobileCPX/PreKSG/libs"
 	"github.com/MobileCPX/PreKSG/models/sp"
 	"github.com/astaxie/beego"
@@ -68,9 +69,11 @@ func (c *CountController) CountSub() {
 	startTime2 := c.GetString("start_time_2")
 	endTime2 := c.GetString("end_time_2")
 
+	systemMark := c.GetString("sm")
+
 	chargeModel := new(sp.ChargeNotification)
 
-	if list, err = chargeModel.GetChargeListSub(startTime, endTime, startTime2, endTime2); err != nil {
+	if list, err = chargeModel.GetChargeListSub(startTime, endTime, startTime2, endTime2, systemMark); err != nil {
 		err = libs.NewReportError(err)
 		fmt.Println(err)
 	}
@@ -92,4 +95,66 @@ func (c *CountController) CountSub() {
 	c.Data["json"] = result
 	c.ServeJSON()
 
+}
+
+func (c *CountController) DivideSystem() {
+	// 首先 获取 所有数据
+	// 然后 进行遍历
+	// 通过 charge_notification表的 transaction_id 跟aff_track 表关联获取 service_id
+
+	var (
+		err        error
+		chargeList []*sp.ChargeNotification
+		affTrack   *sp.AffTrack
+		result     string
+	)
+
+	chargeNotification := new(sp.ChargeNotification)
+
+	if chargeList, err = chargeNotification.GetList(); err != nil {
+		err = libs.NewReportError(err)
+		result = fmt.Sprintf("%v", err)
+		c.Data["json"] = result
+		c.ServeJSON()
+	}
+
+	affTrack = new(sp.AffTrack)
+
+	for _, charge := range chargeList {
+
+		if charge.TransactionId == "" {
+			continue
+		}
+
+		if affTrack.TrackID, err = strconv.ParseInt(charge.TransactionId, 10, 64); err != nil {
+			err = libs.NewReportError(err)
+			result = fmt.Sprintf("%v", err)
+			continue
+		}
+
+		if err = affTrack.GetOne(tracking.ByTrackID); err != nil {
+			continue
+		}
+
+		if affTrack.ServiceID == "BB-NEW-ET" ||
+			affTrack.ServiceID == "GF-NEW-ET" ||
+			affTrack.ServiceID == "EB-NEW-ET" ||
+			affTrack.ServiceID == "MA-NEW-ET" ||
+			affTrack.ServiceID == "POM-NEW-ET" {
+			charge.SystemMark = 2
+		} else {
+			charge.SystemMark = 1
+		}
+
+		if err = charge.UpdateSystemMark(); err != nil {
+			err =libs.NewReportError(err)
+			result = fmt.Sprintf("%v", err)
+			break
+		}
+
+	}
+
+	c.Data["json"] = result
+
+	c.ServeJSON()
 }
