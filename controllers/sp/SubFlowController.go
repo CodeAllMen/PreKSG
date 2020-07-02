@@ -3,7 +3,6 @@ package sp
 import (
 	"fmt"
 	"github.com/MobileCPX/PreBaseLib/splib/tracking"
-	"github.com/MobileCPX/PreKSG/libs"
 	"github.com/MobileCPX/PreKSG/models/sp"
 	"github.com/MobileCPX/PreKSG/service"
 	"github.com/astaxie/beego/logs"
@@ -74,14 +73,14 @@ func (c *SubFlowController) SubReqSMS() {
 	}
 
 	serviceConf := c.getServiceConfig(track.ServiceID)
-	res := service.SubServiceSMS(serviceConf, track, phoneNumber)
+	// res := service.SubServiceSMS(serviceConf, track, phoneNumber)
 
 	// 这里如果处理出错，也就是请求pin码出错，直接跳到某个页面，比如404或谷歌，否则 显示 验证pin码页面
-	if res != "" {
-		fmt.Println(res)
-		c.RedirectURL(c.Ctx.Input.URI() + "/404")
-		return
-	}
+	// if res != "" {
+	// 	fmt.Println(res)
+	// 	c.RedirectURL(c.Ctx.Input.URI() + "/404")
+	// 	return
+	// }
 
 	if serviceConf.KeyWord == "MA" {
 		c.Data["KeyWord"] = "MYA"
@@ -110,8 +109,8 @@ func (c *SubFlowController) ValidateSMS() {
 	var err error
 	track := new(sp.AffTrack)
 	track.TrackID, err = strconv.ParseInt(c.Ctx.Input.Param(":trackID"), 10, 64)
-	phoneNumber := c.Ctx.Input.Param(":phoneNumber")
-	pin := c.Ctx.Input.Param(":pin")
+	// phoneNumber := c.Ctx.Input.Param(":phoneNumber")
+	// pin := c.Ctx.Input.Param(":pin")
 	err = track.GetOne(tracking.ByTrackID)
 	// 获取AOC连接
 	if err != nil {
@@ -122,20 +121,20 @@ func (c *SubFlowController) ValidateSMS() {
 		return
 	}
 
-	serviceConf := c.getServiceConfig(track.ServiceID)
+	// serviceConf := c.getServiceConfig(track.ServiceID)
 
-	if err = service.ValidatePin(serviceConf, track, phoneNumber, pin); err != nil {
-		err = libs.NewReportError(err)
-		fmt.Println(err)
-		data.Code = 1
-		data.Err = fmt.Sprintf("error:%v", err)
-		c.Data["json"] = data
-		c.ServeJSON()
-		return
-	}
+	// if err = service.ValidatePin(serviceConf, track, phoneNumber, pin); err != nil {
+	// 	err = libs.NewReportError(err)
+	// 	fmt.Println(err)
+	// 	data.Code = 1
+	// 	data.Err = fmt.Sprintf("error:%v", err)
+	// 	c.Data["json"] = data
+	// 	c.ServeJSON()
+	// 	return
+	// }
 
 	data.Code = 0
-	data.Url = fmt.Sprintf("http://kg.argameloft.com/thank/%v", track.TrackID)
+	data.Url = fmt.Sprintf("http://mw.argameloft.com/thank/%v", track.TrackID)
 	c.Data["json"] = data
 
 	c.ServeJSON()
@@ -151,7 +150,7 @@ func (c *SubFlowController) Thanks() {
 	if track.TrackID == 0 {
 		c.redirect("http://google.com")
 	}
-	URL := "http://kg.argameloft.com" + c.Ctx.Input.URI()
+	URL := "http://mw.argameloft.com" + c.Ctx.Input.URI()
 	if strings.Contains(URL, "?") {
 		URL = URL + "&status=1"
 	} else {

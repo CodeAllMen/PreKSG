@@ -20,7 +20,7 @@ func (c *LpController) LpSub() {
 		trackID = c.GetString("tid")
 	} else {
 		// LP 页面存入此次点击信息，获取aff_track 表自增ID
-		trackID = tracking.LpPageTracking(c.Ctx.Request, "http://kg.argameloft.com/aff/click", serviceConfig.ServiceID)
+		trackID = tracking.LpPageTracking(c.Ctx.Request, "http://mw.argameloft.com/aff/click", serviceConfig.ServiceID)
 		// 将trackID转为int类型，判断trackID是否为数字类型
 		_, err := strconv.Atoi(trackID)
 

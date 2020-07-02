@@ -50,7 +50,7 @@ func SubService(severConfig sp.ServiceInfo, track *sp.AffTrack) string {
 		timestamp, "ar",
 		severConfig.ShortCode,
 		track.IP,
-		"http://kg.argameloft.com/lp/"+strings.ToLower(strings.Replace(severConfig.ServiceID, "-", "/", 1)),
+		"http://mw.argameloft.com/lp/"+strings.ToLower(strings.Replace(severConfig.ServiceID, "-", "/", 1)),
 		severConfig.RUrl+strconv.FormatInt(track.TrackID, 10))
 	fmt.Println("url: ", urlOrigin)
 
@@ -110,7 +110,7 @@ func SubServiceSMS(severConfig sp.ServiceInfo, track *sp.AffTrack, phoneNumber s
 		"&cpId=%v&requestId=%v&apiKey=%v&signature=%v&timestamp=%v&lang=%v&shortcode=%v" +
 		"&ipAddress=%v&lpUrl=%v"
 	urlOrigin = fmt.Sprintf(urlOrigin, phoneNumber, severConfig.ApplicationId, severConfig.CountryId, severConfig.OperatorId, severConfig.CpId, track.TrackID, severConfig.ApiKey, signature,
-		timestamp, "ar", severConfig.ShortCode, track.IP, "http://kg.argameloft.com/lp/"+strings.ToLower(strings.Replace(severConfig.ServiceID, "-", "/", 1)))
+		timestamp, "ar", severConfig.ShortCode, track.IP, "http://mw.argameloft.com/lp/"+strings.ToLower(strings.Replace(severConfig.ServiceID, "-", "/", 1)))
 
 	fmt.Println("request RequestPin url is:" + urlOrigin)
 
