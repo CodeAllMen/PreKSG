@@ -394,7 +394,7 @@ service:
     url_post: "http://en.ebooknice.com/"
     req_url: "user/add?name={msisdn}&pass={pass}"
     price: "11"
-    msg_text: "Thank you for subscribing to Ebook service. You can visit the portal on http://en.ebooknice.com/. "
+    msg_text: "Thank you for subscribing to Ebook service. You can visit the portal on  http://en.ebooknice.com/  ."
     tnc_url: ""
   EB-DU:
     service_id: "EB-DU"
