@@ -97,6 +97,9 @@ func (c *NotificationController) Post() {
 	if trackID != 0 {
 		track.TrackID, _ = strconv.ParseInt(reqFormData.TransactionId, 10, 64)
 		_ = track.GetOne(tracking.ByTrackID)
+
+		fmt.Println("handle track id: ", track.TrackID)
+
 		serverConfig, err = c.getServiceConfigNotification(track.ServiceID)
 
 		// 如果serverConfig获取出错，则进行数据存储
@@ -117,6 +120,8 @@ func (c *NotificationController) Post() {
 		} else {
 			reqFormData.SystemMark = 1
 		}
+
+		fmt.Println("Notification service ID: ", serverConfig.ServiceID, reqFormData.SystemMark)
 
 		// sp.SendMt(serverConfig, reqFormData)
 	}

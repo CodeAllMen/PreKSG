@@ -118,9 +118,9 @@ func (c *CountController) DivideSystem() {
 		c.ServeJSON()
 	}
 
-	affTrack = new(sp.AffTrack)
-
 	for _, charge := range chargeList {
+
+		affTrack = new(sp.AffTrack)
 
 		if charge.TransactionId == "" {
 			continue

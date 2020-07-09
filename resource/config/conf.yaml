@@ -6,7 +6,6 @@ service:
     operator_id: "28"
     api_key: "ivvT4azDdWN3UTgMPAOelOnIsscSGSKJ"
     api_secret: "vZkXOxb70S9Os6DfYZKyay+60brtDRZZVHFYNBayA7E5dnpBf2Xsu5drtNtBty1D"
-#    api_secret: "vZkXOxb70S9Os6DfYZKyay%2b60brtDRZZVHFYNBayA7E5dnpBf2Xsu5drtNtBty1D"
     rurl: "http://kg.argameloft.com/thank"
     key_word: "GF"
     product_name: "Gold Finger"
