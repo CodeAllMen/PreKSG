@@ -112,11 +112,19 @@ func (charge *ChargeNotification) GetList() (list []*ChargeNotification, err err
 func (charge *ChargeNotification) GetChargeListSub(startTime, endTime, startTime2, endTime2, systemMark string) (list []*ChargeNotification, err error) {
 	db := orm.NewOrm()
 
+	// if _, err = db.Raw("select * from charge_notification c "+
+	// 	"where c.send_time>=? and "+
+	// 	"c.send_time<=? and c.sub_type='RENEWAL' and c.status='DELIVERED' and c.system_mark=? and  "+
+	// 	"c.msisdn in(select msisdn from charge_notification d "+
+	// 	"where d.sub_type='SUBSCRIBE' and d.status='DELIVERED' and d.send_time>=? and d.send_time<=?);", startTime, endTime, systemMark, startTime2, endTime2).QueryRows(&list); err != nil {
+	// 	err = libs.NewReportError(err)
+	// }
+
 	if _, err = db.Raw("select * from charge_notification c "+
 		"where c.send_time>=? and "+
-		"c.send_time<=? and c.sub_type='RENEWAL' and c.status='DELIVERED' and c.system_mark=? and  "+
+		"c.send_time<=? and c.sub_type='RENEWAL' and c.status='DELIVERED' and  "+
 		"c.msisdn in(select msisdn from charge_notification d "+
-		"where d.sub_type='SUBSCRIBE' and d.status='DELIVERED' and d.send_time>=? and d.send_time<=?);", startTime, endTime, systemMark, startTime2, endTime2).QueryRows(&list); err != nil {
+		"where d.sub_type='SUBSCRIBE' and d.status='DELIVERED' and d.send_time>=? and d.send_time<=?);", startTime, endTime, startTime2, endTime2).QueryRows(&list); err != nil {
 		err = libs.NewReportError(err)
 	}
 

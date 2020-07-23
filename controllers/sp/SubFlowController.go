@@ -22,6 +22,12 @@ type SubFlowController struct {
 }
 
 func (c *SubFlowController) Prepare() {
+	c.Ctx.Output.Header("Content-Security-Policy", "default-src: 'self'")
+	c.Ctx.Output.Header("X-Frame-Options", "DENY")
+	c.Ctx.Output.Header("X-Content-Type-Options", "nosniff")
+	c.Ctx.Output.Header("Referrer-Policy", "No Referrer")
+	c.Ctx.Output.Header("Feature-Policy", "vibrate 'self'")
+
 	// 获取track 数据
 	c.trackClickData = c.getTrackData()
 
@@ -142,6 +148,34 @@ func (c *SubFlowController) ValidateSMS() {
 }
 
 func (c *SubFlowController) Tnc() {
+	var (
+		err error
+	)
+
+	track := new(sp.AffTrack)
+	track.TrackID, err = strconv.ParseInt(c.Ctx.Input.Param(":trackID"), 10, 64)
+	err = track.GetOne(tracking.ByTrackID)
+	// 获取AOC连接
+	if err != nil {
+		c.RedirectURL(c.Ctx.Input.URI() + "/404")
+		return
+	}
+
+	serviceConf := c.getServiceConfig(track.ServiceID)
+
+	if serviceConf.KeyWord == "MA" {
+		if serviceConf.ShortCode == "1111" {
+			c.Data["key"] = "MYA"
+		} else {
+			c.Data["key"] = serviceConf.KeyWord
+		}
+	} else {
+		c.Data["key"] = serviceConf.KeyWord
+	}
+
+	c.Data["Price"] = serviceConf.Price
+	c.Data["code"] = serviceConf.ShortCode
+
 	c.TplName = "uae/tnc.html"
 }
 

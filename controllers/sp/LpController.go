@@ -10,7 +10,18 @@ type LpController struct {
 	BaseController
 }
 
+func (c *LpController) Prepare() {
+
+	c.Ctx.Output.Header("Content-Security-Policy", "default-src: 'self'")
+	c.Ctx.Output.Header("X-Frame-Options", "DENY")
+	c.Ctx.Output.Header("X-Content-Type-Options", "nosniff")
+	c.Ctx.Output.Header("Referrer-Policy", "No Referrer")
+	c.Ctx.Output.Header("Feature-Policy", "vibrate 'self'")
+
+}
+
 func (c *LpController) LpSub() {
+
 	page := c.Ctx.Input.Param(":serviceType")
 	operator := c.Ctx.Input.Param(":operator")
 	trackID := ""
@@ -51,6 +62,7 @@ func (c *LpController) LpSub() {
 	c.Data["contentAr"] = serviceConfig.DescriptionAr
 	c.Data["UrlPost"] = serviceConfig.UrlPost
 	c.Data["Price"] = serviceConfig.Price
+	c.Data["TrackId"] = trackID
 
 	// ET的
 	if serviceConfig.ShortCode == "1111" {
