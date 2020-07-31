@@ -35,6 +35,22 @@ type PostParseForm struct {
 	ServiceCode     string `form:"serviceCode"`
 }
 
+type callUrl struct {
+	Msisdn          string `xml:"msisdn"`
+	PackageId       int    `xml:"package_id"`
+	TransactionType string `xml:"TransactionType"`
+	Amount          string `xml:"Amount"`
+	Channel         string `xml:"channel"`
+	TransactionId1  string `xml:"transaction_id1"`
+	TransactionId2  string `xml:"transaction_id2"`
+	TransactionId   string `xml:"transaction_id"`
+	Keyword         string `xml:"keyword"`
+}
+
+type CallBackResult struct {
+	CallUrl callUrl `xml:"Call_url"`
+}
+
 // 订阅通知  sessionId:[AT030159x01x1559807672429] statusNumber:[2] statusText:[Payment authorized] notificationId:[2217664102] command:[deliverSessionState]]
 // 扣费通知  command:[recurrentPayment] statusText:[Charged] time:[2019-06-06 09:54:58] amount:[500] trid:[668286775] statusNumber:[2] subscriptionId:[AT030159x01x1559807672429] msisdn:[00436643607604] serviceCode:[AT030159]]
 
@@ -43,10 +59,12 @@ func (c *NotificationController) Post() {
 
 	body, _ := ioutil.ReadAll(c.Ctx.Request.Body)
 	var dnJson sp.DnJson
+	var callBackResult CallBackResult
 
-	err := json.Unmarshal(body, &dnJson)
+	// err := json.Unmarshal(body, &dnJson)
+	err := json.Unmarshal(body, &callBackResult)
 
-	fmt.Println("KC UAE Data: ", string(body))
+	fmt.Println("MW UAE Data: ", string(body))
 
 	if err != nil {
 		logs.Error("notification ERROR,接收通知错误", err.Error())
@@ -54,28 +72,21 @@ func (c *NotificationController) Post() {
 		return
 	}
 
-	logs.Info("notification 通知:", dnJson)
+	logs.Info("notification 通知:", callBackResult)
 	var reqFormData sp.ChargeNotification
-	if dnJson != (sp.DnJson{}) {
-		reqFormData.RequestId = dnJson.RequestId
-		if dnJson.Transaction != (sp.Transaction{}) {
-			reqFormData.TransactionId = dnJson.Transaction.TransactionId
-			if dnJson.Transaction.Data != (sp.Data{}) {
-				reqFormData.Shortcode = dnJson.Transaction.Data.Shortcode
-				reqFormData.ChannelId = dnJson.Transaction.Data.ChannelId
-				reqFormData.ApplicationId = dnJson.Transaction.Data.ApplicationId
-				reqFormData.Country = dnJson.Transaction.Data.CountryId
-				reqFormData.OperatorId = dnJson.Transaction.Data.OperatorId
-				reqFormData.Msisdn = dnJson.Transaction.Data.Msisdn
-				reqFormData.ActivityTime = dnJson.Transaction.Data.ActivityTime
-				reqFormData.SubscriptionEnd = dnJson.Transaction.Data.SubscriptionEnd
-				if dnJson.Transaction.Data.Action != (sp.Action{}) {
-					reqFormData.Type = dnJson.Transaction.Data.Action.Type
-					reqFormData.SubType = dnJson.Transaction.Data.Action.SubType
-					reqFormData.Status = dnJson.Transaction.Data.Action.Status
-					reqFormData.Rate = dnJson.Transaction.Data.Action.Rate
-				}
-			}
+
+	if callBackResult != (CallBackResult{}) {
+
+		reqFormData.SubType = callBackResult.CallUrl.TransactionType
+		reqFormData.Msisdn = callBackResult.CallUrl.Msisdn
+		reqFormData.ChannelId = callBackResult.CallUrl.Channel
+		reqFormData.Charge = callBackResult.CallUrl.Amount
+		reqFormData.Keyword = callBackResult.CallUrl.Keyword
+
+		if reqFormData.SubType == "SUB" || reqFormData.SubType == "UNSUBG" {
+			reqFormData.RequestId = callBackResult.CallUrl.TransactionId2
+			reqFormData.TransactionId = callBackResult.CallUrl.TransactionId1
+		} else if reqFormData.SubType == "UNSUB" {
 
 		}
 	}
@@ -107,9 +118,11 @@ func (c *NotificationController) Post() {
 			c.StopRun()
 		}
 		// sp.SendMt(serverConfig, reqFormData)
+	} else {
+		// 通过电话号码 msisdn 进行获取 track_id
+
 	}
 
-	fmt.Println("trackId2: ", track.TrackID)
 	fmt.Println("config: ", serverConfig)
 
 	// c.Ctx.WriteString("ok")
@@ -131,7 +144,7 @@ func (c *NotificationController) Post() {
 
 	// 新订阅通知 ，没有找到此订阅信息，需要重新插入mo数据
 	notificationType := ""
-	if reqFormData.SubType == "SUBSCRIBE" && reqFormData.Status == "DELIVERED" {
+	if reqFormData.SubType == "SUB" {
 
 		var moBase = common.MoBase{}
 		moBase.SubscriptionID = notify.SubscriptionId
@@ -170,12 +183,12 @@ func (c *NotificationController) Post() {
 	}
 
 	// 扣费，退订通知
-	if reqFormData.SubType == "RENEWAL" && reqFormData.Status == "DELIVERED" { // 成功扣费通知
+	if reqFormData.SubType == "REN" { // 成功扣费通知
 		notificationType, _ = moT.AddSuccessMTNum(notify.SubscriptionId, notify.TransactionID)
 		// sp.SendMt(serverConfig, &reqFormData)
-	} else if reqFormData.SubType == "RENEWAL" && reqFormData.Status != "Failed" { // 失败扣费通知
-		notificationType, _ = moT.AddFailedMTNum(notify.SubscriptionId, notify.TransactionID)
-	} else if reqFormData.SubType == "UNSUBSCRIBE" && reqFormData.Status == "DELIVERED" { // 退订通知
+		// } else if reqFormData.SubType == "RENEWAL" && reqFormData.Status != "Failed" { // 失败扣费通知
+		// notificationType, _ = moT.AddFailedMTNum(notify.SubscriptionId, notify.TransactionID)
+	} else if reqFormData.SubType == "UNSUB" || reqFormData.SubType == "UNSUBG" { // 退订通知
 		notificationType, _ = moT.UnsubUpdateMo(notify.SubscriptionId)
 	}
 

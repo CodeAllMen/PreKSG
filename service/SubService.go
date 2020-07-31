@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"github.com/MobileCPX/PreKSG/libs"
 	"github.com/MobileCPX/PreKSG/models/sp"
+	"github.com/astaxie/beego/httplib"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -82,10 +83,14 @@ func SubService(severConfig sp.ServiceInfo, track *sp.AffTrack) string {
 
 func SubServiceSMS(severConfig sp.ServiceInfo, track *sp.AffTrack, phoneNumber string) string {
 	// 构造参数， 请求 request pin接口
+	var (
+		err           error
+		responseBytes []byte
+	)
 	timestamp := strconv.Itoa(int(time.Now().Unix()))
 	urlOrigin := "http://ksg.kncee.com/MSG/v1.1/API/RequestPinCode?"
-	signatureUrl := "ApiKey=%v&ApiSecret=%s&ApplicationId=%v&CountryId=%v&OperatorId=%v" +
-		"&CpId=%v&MSISDN=%v&Timestamp=%v&Lang=%v&ShortCode=%v&Method=%v"
+	// signatureUrl := "ApiKey=%v&ApiSecret=%s&ApplicationId=%v&CountryId=%v&OperatorId=%v" +
+	// 	"&CpId=%v&MSISDN=%v&Timestamp=%v&Lang=%v&ShortCode=%v&Method=%v"
 	// urlParams := url.Values{}
 	// urlParams.Add("ApiKey", severConfig.ApiKey)
 	// urlParams.Add("ApiSecret", severConfig.ApiSecret)
@@ -100,86 +105,109 @@ func SubServiceSMS(severConfig sp.ServiceInfo, track *sp.AffTrack, phoneNumber s
 	// urlParams.Add("Method", "RequestPinCode")
 	// apiSecret := libs.EncodeGetUrlParamValues(urlParams)
 
-	signatureUrl = fmt.Sprintf(signatureUrl, severConfig.ApiKey, libs.EscapeQueryParam(severConfig.ApiSecret),
-		severConfig.ApplicationId, severConfig.CountryId, severConfig.OperatorId, severConfig.CpId, phoneNumber, timestamp, "AR", severConfig.ShortCode, "RequestPinCode")
+	// signatureUrl = fmt.Sprintf(signatureUrl, severConfig.ApiKey, libs.EscapeQueryParam(severConfig.ApiSecret),
+	// 	severConfig.ApplicationId, severConfig.CountryId, severConfig.OperatorId, severConfig.CpId, phoneNumber, timestamp, "AR", severConfig.ShortCode, "RequestPinCode")
 	// signatureUrl := libs.EncodeGetUrlParamValues(urlParams)
-	fmt.Println("signature_url:  ", signatureUrl)
-	signature := HmacSha256([]byte(signatureUrl), []byte(severConfig.ApiSecret))
+	// fmt.Println("signature_url:  ", signatureUrl)
+	// signature := HmacSha256([]byte(signatureUrl), []byte(severConfig.ApiSecret))
 
-	urlOrigin = urlOrigin + "MSISDN=%v&applicationId=%v&countryId=%v&operatorId=%v" +
-		"&cpId=%v&requestId=%v&apiKey=%v&signature=%v&timestamp=%v&lang=%v&shortcode=%v" +
-		"&ipAddress=%v&lpUrl=%v"
-	urlOrigin = fmt.Sprintf(urlOrigin, phoneNumber, severConfig.ApplicationId, severConfig.CountryId, severConfig.OperatorId, severConfig.CpId, track.TrackID, severConfig.ApiKey, signature,
-		timestamp, "ar", severConfig.ShortCode, track.IP, "http://mw.argameloft.com/lp/"+strings.ToLower(strings.Replace(severConfig.ServiceID, "-", "/", 1)))
+	// urlOrigin = urlOrigin + "MSISDN=%v&applicationId=%v&countryId=%v&operatorId=%v" +
+	// 	"&cpId=%v&requestId=%v&apiKey=%v&signature=%v&timestamp=%v&lang=%v&shortcode=%v" +
+	// 	"&ipAddress=%v&lpUrl=%v"
+	// urlOrigin = fmt.Sprintf(urlOrigin, phoneNumber, severConfig.ApplicationId, severConfig.CountryId, severConfig.OperatorId, severConfig.CpId, track.TrackID, severConfig.ApiKey, signature,
+	// 	timestamp, "ar", severConfig.ShortCode, track.IP, "http://mw.argameloft.com/lp/"+strings.ToLower(strings.Replace(severConfig.ServiceID, "-", "/", 1)))
 
-	fmt.Println("request RequestPin url is:" + urlOrigin)
+	// fmt.Println("request RequestPin url is:" + urlOrigin)
 
-	client := &http.Client{}
-	reqest, _ := http.NewRequest("GET", urlOrigin, nil)
-	reqest.Header.Set("statusMessage", "http://thankyou.com")
-	res, err := client.Do(reqest)
+	// client := &http.Client{}
+	// reqest, _ := http.NewRequest("POST", urlOrigin, nil)
+	// reqest.Header.Set("statusMessage", "http://thankyou.com")
+	// res, err := client.Do(reqest)
 
-	if err != nil {
+	req := httplib.Post(urlOrigin)
+
+	params := make(map[string]string)
+	params["msisdn"] = phoneNumber
+	params["password"] = ""
+	params["txnid"] = ""
+	params["user"] = ""
+	params["packageId"] = ""
+	params["channel"] = ""
+	params["sourceIP"] = ""
+	params["adPartnerName"] = ""
+	params["pubId"] = ""
+
+	if _, err = req.JSONBody(params); err != nil {
 		err = libs.NewReportError(err)
 		return libs.GetErrorString(err)
 	}
 
-	body, _ := ioutil.ReadAll(res.Body)
-	fmt.Println("request http://ksg.kncee.com/MSG/v1.1/API/RequestPinCode, result: " + string(body))
+	if responseBytes, err = req.Bytes(); err != nil {
+		err = libs.NewReportError(err)
+		return libs.GetErrorString(err)
+	}
+
+	fmt.Println("request https://pt5.etisalat.ae/Moneta/pushPOSTPin.htm, result: " + string(responseBytes))
 
 	var requestResult requestPin
 
-	if err = json.Unmarshal(body, &requestResult); err != nil {
+	if err = json.Unmarshal(responseBytes, &requestResult); err != nil {
 		err = libs.NewReportError(err)
 		return libs.GetErrorString(err)
-	}
-
-	if requestResult.I3 != "" {
-		return libs.GetErrorString(libs.NewReportError(errors.New(requestResult.I3)))
-	}
-
-	if requestResult.I0 != "" {
-		return libs.GetErrorString(libs.NewReportError(errors.New(requestResult.I0)))
 	}
 
 	return ""
 }
 
 func ValidatePin(severConfig sp.ServiceInfo, track *sp.AffTrack, phoneNumber, pin string) (err error) {
-	timestamp := strconv.Itoa(int(time.Now().Unix()))
-	urlOrigin := "http://ksg.kncee.com/MSG/v1.1/API/ValidatePinCode?"
-	signatureUrl := "ApiKey=%v&ApiSecret=%v&ApplicationId=%v&CountryId=%v&OperatorId=%v" +
-		"&CpId=%v&MSISDN=%v&Timestamp=%v&Lang=%v&ShortCode=%v&Code=%v&Method=%v"
+	// timestamp := strconv.Itoa(int(time.Now().Unix()))
+	urlOrigin := "https://pt5.etisalat.ae/Moneta/confirmPOSTPin.htm"
+	// signatureUrl := "ApiKey=%v&ApiSecret=%v&ApplicationId=%v&CountryId=%v&OperatorId=%v" +
+	// 	"&CpId=%v&MSISDN=%v&Timestamp=%v&Lang=%v&ShortCode=%v&Code=%v&Method=%v"
 	// urlParams := url.Values{}
 	// urlParams.Add("ApiSecret", severConfig.ApiSecret)
 	// apiSecret := libs.EncodeGetUrlParamValues(urlParams)
 
-	signatureUrl = fmt.Sprintf(signatureUrl, severConfig.ApiKey, libs.EscapeQueryParam(severConfig.ApiSecret),
-		severConfig.ApplicationId, severConfig.CountryId, severConfig.OperatorId, severConfig.CpId,
-		phoneNumber, timestamp, "AR", severConfig.ShortCode, pin, "ValidatePinCode")
-	fmt.Println("signature_url:  ", signatureUrl)
-	signature := HmacSha256([]byte(signatureUrl), []byte(severConfig.ApiSecret))
+	// signatureUrl = fmt.Sprintf(signatureUrl, severConfig.ApiKey, libs.EscapeQueryParam(severConfig.ApiSecret),
+	// 	severConfig.ApplicationId, severConfig.CountryId, severConfig.OperatorId, severConfig.CpId,
+	// 	phoneNumber, timestamp, "AR", severConfig.ShortCode, pin, "ValidatePinCode")
+	// fmt.Println("signature_url:  ", signatureUrl)
+	// signature := HmacSha256([]byte(signatureUrl), []byte(severConfig.ApiSecret))
 
-	urlOrigin = urlOrigin + "MSISDN=%v&applicationId=%v&countryId=%v&operatorId=%v" +
-		"&cpId=%v&requestId=%v&apiKey=%v&signature=%v&timestamp=%v&lang=%v&shortcode=%v&code=%v"
-	urlOrigin = fmt.Sprintf(urlOrigin, phoneNumber, severConfig.ApplicationId, severConfig.CountryId, severConfig.OperatorId, severConfig.CpId, track.TrackID, severConfig.ApiKey, signature,
-		timestamp, "ar", severConfig.ShortCode, pin)
+	// urlOrigin = urlOrigin + "MSISDN=%v&applicationId=%v&countryId=%v&operatorId=%v" +
+	// 	"&cpId=%v&requestId=%v&apiKey=%v&signature=%v&timestamp=%v&lang=%v&shortcode=%v&code=%v"
+	// urlOrigin = fmt.Sprintf(urlOrigin, phoneNumber, severConfig.ApplicationId, severConfig.CountryId, severConfig.OperatorId, severConfig.CpId, track.TrackID, severConfig.ApiKey, signature,
+	// 	timestamp, "ar", severConfig.ShortCode, pin)
 
 	fmt.Println("request ValidatePin url is:" + urlOrigin)
 
-	client := &http.Client{}
-	reqest, _ := http.NewRequest("GET", urlOrigin, nil)
-	reqest.Header.Set("statusMessage", "http://thankyou.com")
-	res, err := client.Do(reqest)
+	// client := &http.Client{}
+	// reqest, _ := http.NewRequest("GET", urlOrigin, nil)
+	// reqest.Header.Set("statusMessage", "http://thankyou.com")
+	// res, err := client.Do(reqest)
 
-	if err != nil {
+	req := httplib.Post(urlOrigin)
+
+	params := make(map[string]string)
+	params["msisdn"] = phoneNumber
+	params["password"] = ""
+	params["txnid"] = ""
+	params["user"] = ""
+	params["packageId"] = ""
+	params["pin"] = ""
+	params["token"] = ""
+	params["channel"] = ""
+	params["sourceIP"] = ""
+	params["adPartnerName"] = ""
+	params["pubId"] = ""
+
+	if _, err = req.JSONBody(params); err != nil {
 		err = libs.NewReportError(err)
-		fmt.Println(err)
 		return
 	}
 
-	body, _ := ioutil.ReadAll(res.Body)
-	fmt.Println("request http://ksg.kncee.com/MSG/v1.1/API/ValidatePinCode, result: " + string(body))
+	body, _ := req.Bytes()
+	fmt.Println("request https://pt5.etisalat.ae/Moneta/confirmPOSTPin.htm, result: " + string(body))
 
 	var requestResult requestPin
 
@@ -187,14 +215,6 @@ func ValidatePin(severConfig sp.ServiceInfo, track *sp.AffTrack, phoneNumber, pi
 		err = libs.NewReportError(err)
 		fmt.Println(err)
 		return
-	}
-
-	if requestResult.I3 != "" {
-		return libs.NewReportError(errors.New(requestResult.I3))
-	}
-
-	if requestResult.I0 != "" {
-		return libs.NewReportError(errors.New(requestResult.I0))
 	}
 
 	return
