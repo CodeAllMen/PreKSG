@@ -11,8 +11,9 @@ import (
 
 // AffTrack 网盟点击追踪
 type AffTrack struct {
-	TrackID  int64  `orm:"pk;auto;column(track_id)"`  //自增ID
+	TrackID  int64  `orm:"pk;auto;column(track_id)"`  // 自增ID
 	Sendtime string `orm:"column(sendtime);size(30)"` // 点击时间
+	Msisdn   string `orm:"column(msisdn)"`
 
 	tracking.Track
 }
@@ -83,7 +84,7 @@ func InsertHourClick() {
 	}
 
 	totalHourClick := new([]click.HourClick)
-	//SQL := fmt.Sprintf("SELECT left(sendtime,13) as hour_time,postback_price, (case service_id when '889-Vodafone' "+
+	// SQL := fmt.Sprintf("SELECT left(sendtime,13) as hour_time,postback_price, (case service_id when '889-Vodafone' "+
 	//	"THEN 3 WHEN '889-Three' THEN 4 WHEN '892-Vodafone' THEN 11 WHEN '892-Three' THEN 12 ELSE 0 END) as"+
 	//	" camp_id, offer_id,aff_name,pub_id,count(1) as click_num ,click_status, promoter_id "+
 	//	"from aff_track   where service_id <> ''  and left(sendtime,13)>'%s' and left(sendtime,13)<'%s' group by "+
