@@ -56,6 +56,17 @@ func (track *AffTrack) GetOne(queryType int) error {
 	return query.One(track)
 }
 
+func (track *AffTrack) GetOneByMsisdn(msisdn string) error {
+	o := orm.NewOrm()
+	var (
+		query orm.QuerySeter
+	)
+
+	query = o.QueryTable("aff_track").Filter("msisdn", msisdn)
+
+	return query.One(track)
+}
+
 func (track *AffTrack) GetAll() {
 
 }
