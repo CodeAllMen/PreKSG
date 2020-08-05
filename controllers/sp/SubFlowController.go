@@ -128,6 +128,16 @@ func (c *SubFlowController) ValidateSMS() {
 		return
 	}
 
+	if phoneNumber == "" {
+		data.Code = 1
+		data.Err = fmt.Sprintf("error:%v", "null msisdn")
+		c.Data["json"] = data
+		c.ServeJSON()
+		return
+	}
+
+	track.Msisdn = phoneNumber
+
 	serviceConf := c.getServiceConfig(track.ServiceID)
 
 	if err = service.ValidatePin(serviceConf, track, phoneNumber, pin); err != nil {
@@ -138,6 +148,10 @@ func (c *SubFlowController) ValidateSMS() {
 		c.Data["json"] = data
 		c.ServeJSON()
 		return
+	}
+
+	if err = track.Update(); err != nil {
+		fmt.Println("sub save msisdn error: ", err)
 	}
 
 	data.Code = 0

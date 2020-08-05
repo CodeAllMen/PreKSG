@@ -91,14 +91,32 @@ func (c *NotificationController) Post() {
 	//	userHistory := new(sp.UserReqHistory)
 	//	trackID := userHistory.GetTrackIDBySessionID(reqFormData.SubscriptionID)
 	// 通过trackID 查询 点击数据
-	fmt.Println("trackID1: ", reqFormData.TransactionId)
+	fmt.Println("msisdn1 : ", reqFormData.TransactionId)
+	// 先通过手机msisdn进行查询 track记录
+
 	trackID, _ := strconv.Atoi(reqFormData.TransactionId)
 
 	if trackID != 0 {
-		track.TrackID, _ = strconv.ParseInt(reqFormData.TransactionId, 10, 64)
-		_ = track.GetOne(tracking.ByTrackID)
+		// track.TrackID, _ = strconv.ParseInt(reqFormData.TransactionId, 10, 64)
+		// _ = track.GetOne(tracking.ByTrackID)
+		_ = track.GetOneByMsisdn(reqFormData.Msisdn)
 
 		fmt.Println("handle track id: ", track.TrackID)
+
+		// 如果没有msisdn，则到mo表进行查询
+		if track.TrackID == 0 {
+			// 此处应该查询mo表，关于此msisdn 的第一次订阅时间，如果是 6.1 之前的就回传到老系统，否则回传到新系统
+			// 直接获取一个6.1号之前的track记录
+			checkMo := new(mo.Mo)
+			if _, err = checkMo.GetMoByMsisdnAndSubType(reqFormData.Msisdn); err != nil {
+				fmt.Println("根据msisdn获取mo数据失败")
+			} else {
+				track.TrackID = checkMo.TrackID
+				if err = track.GetOne(tracking.ByTrackID); err != nil {
+					fmt.Println("根据msisdn trackid获取track数据失败")
+				}
+			}
+		}
 
 		serverConfig, err = c.getServiceConfigNotification(track.ServiceID)
 
@@ -115,7 +133,9 @@ func (c *NotificationController) Post() {
 			serverConfig.ServiceID == "GF-NEW-ET" ||
 			serverConfig.ServiceID == "EB-NEW-ET" ||
 			serverConfig.ServiceID == "MA-NEW-ET" ||
-			serverConfig.ServiceID == "POM-NEW-ET" {
+			serverConfig.ServiceID == "POM-NEW-ET" ||
+			serverConfig.ServiceID == "YG-ET" ||
+			serverConfig.ServiceID == "PG-ET" {
 			reqFormData.SystemMark = 2
 		} else {
 			reqFormData.SystemMark = 1
@@ -123,6 +143,7 @@ func (c *NotificationController) Post() {
 
 		fmt.Println("Notification service ID: ", serverConfig.ServiceID, reqFormData.SystemMark)
 
+		reqFormData.AffName = track.AffName
 		// sp.SendMt(serverConfig, reqFormData)
 	}
 
@@ -237,7 +258,9 @@ func (c *NotificationController) Post() {
 			sendNoti.ServiceID == "GF-NEW-ET" ||
 			sendNoti.ServiceID == "EB-NEW-ET" ||
 			sendNoti.ServiceID == "MA-NEW-ET" ||
-			sendNoti.ServiceID == "POM-NEW-ET" {
+			sendNoti.ServiceID == "POM-NEW-ET" ||
+			sendNoti.ServiceID == "YG-ET" ||
+			sendNoti.ServiceID == "PG-ET" {
 			sendNoti.SendData(admindata.SEC)
 		} else {
 			sendNoti.SendData(admindata.PROD)
