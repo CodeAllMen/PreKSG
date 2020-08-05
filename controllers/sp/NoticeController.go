@@ -58,7 +58,7 @@ type CallBackResult struct {
 func (c *NotificationController) Post() {
 
 	body, _ := ioutil.ReadAll(c.Ctx.Request.Body)
-	var dnJson sp.DnJson
+	// var dnJson sp.DnJson
 	var callBackResult CallBackResult
 
 	// err := json.Unmarshal(body, &dnJson)
@@ -106,8 +106,25 @@ func (c *NotificationController) Post() {
 	trackID, _ := strconv.Atoi(reqFormData.TransactionId)
 
 	if trackID != 0 {
-		track.TrackID, _ = strconv.ParseInt(reqFormData.TransactionId, 10, 64)
-		_ = track.GetOne(tracking.ByTrackID)
+		_ = track.GetOneByMsisdn(reqFormData.Msisdn)
+
+		fmt.Println("handle track id: ", track.TrackID)
+
+		// 如果没有msisdn，则到mo表进行查询
+		if track.TrackID == 0 {
+			// 此处应该查询mo表，关于此msisdn 的第一次订阅时间，如果是 6.1 之前的就回传到老系统，否则回传到新系统
+			// 直接获取一个6.1号之前的track记录
+			checkMo := new(mo.Mo)
+			if _, err = checkMo.GetMoByMsisdnAndSubType(reqFormData.Msisdn); err != nil {
+				fmt.Println("根据msisdn获取mo数据失败")
+			} else {
+				track.TrackID = checkMo.TrackID
+				if err = track.GetOne(tracking.ByTrackID); err != nil {
+					fmt.Println("根据msisdn trackid获取track数据失败")
+				}
+			}
+		}
+
 		serverConfig, err = c.getServiceConfigNotification(track.ServiceID)
 
 		// 如果serverConfig获取出错，则进行数据存储
