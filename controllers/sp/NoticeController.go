@@ -1,7 +1,7 @@
 package sp
 
 import (
-	"encoding/json"
+	"encoding/xml"
 	"fmt"
 	"github.com/MobileCPX/PreBaseLib/splib"
 	"github.com/MobileCPX/PreBaseLib/splib/admindata"
@@ -62,7 +62,7 @@ func (c *NotificationController) Post() {
 	var callBackResult CallBackResult
 
 	// err := json.Unmarshal(body, &dnJson)
-	err := json.Unmarshal(body, &callBackResult)
+	err := xml.Unmarshal(body, &callBackResult)
 
 	fmt.Println("MW UAE Data: ", string(body))
 
@@ -87,7 +87,9 @@ func (c *NotificationController) Post() {
 			reqFormData.RequestId = callBackResult.CallUrl.TransactionId2
 			reqFormData.TransactionId = callBackResult.CallUrl.TransactionId1
 		} else if reqFormData.SubType == "UNSUB" {
-
+			reqFormData.TransactionId = callBackResult.CallUrl.TransactionId
+		} else {
+			reqFormData.TransactionId = callBackResult.CallUrl.TransactionId1
 		}
 	}
 
@@ -134,10 +136,10 @@ func (c *NotificationController) Post() {
 			c.Ctx.WriteString("ok")
 			c.StopRun()
 		}
-		// sp.SendMt(serverConfig, reqFormData)
-	} else {
-		// 通过电话号码 msisdn 进行获取 track_id
 
+		reqFormData.AffName = track.AffName
+		reqFormData.RequestId = fmt.Sprintf("%v", track.TrackID)
+		// sp.SendMt(serverConfig, reqFormData)
 	}
 
 	fmt.Println("config: ", serverConfig)
@@ -246,11 +248,12 @@ func (c *NotificationController) Post() {
 		sendNoti.Sendtime = nowTime
 		sendNoti.NotificationType = notificationType
 		fmt.Println("service id ====== ", sendNoti.ServiceID)
-		if sendNoti.ServiceID == "BB-NEW-ET" {
-			sendNoti.SendData(admindata.SEC)
-		} else {
-			sendNoti.SendData(admindata.PROD)
-		}
+		// if sendNoti.ServiceID == "BB-NEW-ET" {
+		// 	sendNoti.SendData(admindata.SEC)
+		// } else {
+		// 	sendNoti.SendData(admindata.PROD)
+		// }
+		sendNoti.SendData(admindata.PROD)
 		fmt.Println("发送订阅通知给后台 完成")
 	}
 
