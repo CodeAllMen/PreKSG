@@ -6,7 +6,6 @@ package sp
 
 import (
 	"fmt"
-	"github.com/MobileCPX/PreBaseLib/splib/tracking"
 	"github.com/MobileCPX/PreKSG/libs"
 	"github.com/MobileCPX/PreKSG/models/sp"
 	"github.com/astaxie/beego"
@@ -71,9 +70,12 @@ func (c *CountController) CountSub() {
 
 	systemMark := c.GetString("sm")
 
+	// 网盟名字
+	affName := c.GetString("an")
+
 	chargeModel := new(sp.ChargeNotification)
 
-	if list, err = chargeModel.GetChargeListSub(startTime, endTime, startTime2, endTime2, systemMark); err != nil {
+	if list, err = chargeModel.GetChargeListSub(startTime, endTime, startTime2, endTime2, systemMark, affName); err != nil {
 		err = libs.NewReportError(err)
 		fmt.Println(err)
 	}
@@ -105,7 +107,7 @@ func (c *CountController) DivideSystem() {
 	var (
 		err        error
 		chargeList []*sp.ChargeNotification
-		affTrack   *sp.AffTrack
+		// affTrack   *sp.AffTrack
 		result     string
 	)
 
@@ -120,34 +122,41 @@ func (c *CountController) DivideSystem() {
 
 	for _, charge := range chargeList {
 
-		affTrack = new(sp.AffTrack)
+		// affTrack = new(sp.AffTrack)
 
-		if charge.TransactionId == "" {
+		// if charge.TransactionId == "" {
+		// 	continue
+		// }
+		//
+		// if affTrack.TrackID, err = strconv.ParseInt(charge.TransactionId, 10, 64); err != nil {
+		// 	err = libs.NewReportError(err)
+		// 	result = fmt.Sprintf("%v", err)
+		// 	continue
+		// }
+		//
+		// if err = affTrack.GetOne(tracking.ByTrackID); err != nil {
+		// 	continue
+		// }
+
+		// 根据时间判断，同时 应该 是根据电话号码取到订阅的时间，然后再根据时间判断
+		chargeTmp := new(sp.ChargeNotification)
+
+		if _, err = chargeTmp.GetChargeByMsisdn(charge.Msisdn); err != nil {
+			fmt.Println(err)
 			continue
 		}
 
-		if affTrack.TrackID, err = strconv.ParseInt(charge.TransactionId, 10, 64); err != nil {
-			err = libs.NewReportError(err)
-			result = fmt.Sprintf("%v", err)
-			continue
-		}
-
-		if err = affTrack.GetOne(tracking.ByTrackID); err != nil {
-			continue
-		}
-
-		if affTrack.ServiceID == "BB-NEW-ET" ||
-			affTrack.ServiceID == "GF-NEW-ET" ||
-			affTrack.ServiceID == "EB-NEW-ET" ||
-			affTrack.ServiceID == "MA-NEW-ET" ||
-			affTrack.ServiceID == "POM-NEW-ET" {
+		if chargeTmp.SendTime > "2020-06-01 00:00:01" {
 			charge.SystemMark = 2
+			charge.AffName = "FeiFan"
 		} else {
 			charge.SystemMark = 1
 		}
 
+		// 根据 时间 来判断 新老系统
+
 		if err = charge.UpdateSystemMark(); err != nil {
-			err =libs.NewReportError(err)
+			err = libs.NewReportError(err)
 			result = fmt.Sprintf("%v", err)
 			break
 		}
